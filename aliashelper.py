@@ -62,8 +62,14 @@ def main():
 
 
 def generate_windows_aliases():
-    which_result = which("git")
     aliases_string_buf = GENERIC_ALIASES
+    notepad_alias = "alias notepad=\"/c/Program\ Files\ \(x86\)/Notepad++/notepad++.exe\"\n"
+    aliases_string_buf += "\n" + notepad_alias
+    shortcut_alias = SHORTCUT_ALIAS_INCOMP + f"notepad {ALIASES_FILENAME}\n"
+    aliases_string_buf += shortcut_alias
+    aliases_string_buf += SOURCE_ALIAS
+
+    which_result = which("git")
     if which_result is not None:
         print("Setting up aliases for git..")
         # This is the path for git
@@ -71,10 +77,6 @@ def generate_windows_aliases():
         if os.path.isfile(".bash_aliases") and not TEST_MODE:
             print(f"{ALIASES_FILENAME} file already exists")
             sys.exit(0)
-        notepad_alias = "alias notepad=\"/c/Program\ Files\ \(x86\)/Notepad++/notepad++.exe\"\n"
-        aliases_string_buf += "\n" + notepad_alias
-        shortcut_alias = SHORTCUT_ALIAS_INCOMP + f"notepad {ALIASES_FILENAME}\n"
-        aliases_string_buf += shortcut_alias
         target_file = file_writer(ALIASES_FILENAME, aliases_string_buf)
         print(f"Generated {target_file} in {os.getcwd()} for git")
     else:
