@@ -21,7 +21,6 @@ GENERIC_ALIASES = \
     f"alias gita='git add'\n" \
     f"alias gitaa='git add .'\n" \
     f"alias gitc='git commit'\n" \
-    f"alias gitc='git commit'\n" \
     f"alias gitd='git diff'\n" \
     f"alias gitds='git diff --staged'\n" \
     f"alias gitm='git merge'\n" \
