@@ -4,8 +4,14 @@ Python utility to set up common and useful aliases
 import os
 import sys
 import getpass
+from shutil import which
 
+# Configuration
+TEST_MODE = True
+TEST_FILENAME = "test_aliases.txt"
 ALIASES_FILENAME = ".bash_aliases"
+
+
 GENERIC_ALIASES = \
     f"alias gits='git status'\n" \
     f"alias gita='git add'\n" \
@@ -31,11 +37,14 @@ EDITOR_SELECTION = {
     3: "custom"
 }
 
-TEST_MODE = True
-TEST_FILENAME = "test_aliases.txt"
+
+WIN_MSYS2_CMD = "msys2_shell.cmd"
+WIN_MINGW64_ARGS = "-mingw64 -c"
+WIN_MINGW64_CMD = f"{WIN_MSYS2_CMD} {WIN_MINGW64_ARGS}"
 
 
 def main():
+    print("-- Python alias file creator utility --")
     if sys.platform.startswith("win32"):
         print("Detected Windows platform")
         generate_windows_aliases()
@@ -44,29 +53,38 @@ def main():
         generate_unix_aliases()
     else:
         print("Not implemented for this OS.")
-        sys.exit(0)
+    print("-- Alias helper finished --")
 
 
 def generate_windows_aliases():
-    print("Setting up aliases for git..")
-    # This is the path for git
-    os.chdir(os.getenv('userprofile'))
-    if os.path.isfile(".bash_aliases") and not TEST_MODE:
-        print(f"{ALIASES_FILENAME} file already exists")
-        sys.exit(0)
+    which_result = which("git")
     aliases_string_buf = GENERIC_ALIASES
-    notepad_alias = "alias notepad=\"/c/Program\ Files\ \(x86\)/Notepad++/notepad++.exe\"\n"
-    aliases_string_buf += "\n" + notepad_alias
-    shortcut_alias = SHORTCUT_ALIAS_INCOMP + f"notepad {ALIASES_FILENAME}\n"
-    aliases_string_buf += shortcut_alias
-    target_file = file_writer(ALIASES_FILENAME, aliases_string_buf)
-    print(f"Generated {target_file} in {os.getcwd()} for git")
+    if which_result is not None:
+        print("Setting up aliases for git..")
+        # This is the path for git
+        os.chdir(os.getenv('userprofile'))
+        if os.path.isfile(".bash_aliases") and not TEST_MODE:
+            print(f"{ALIASES_FILENAME} file already exists")
+            sys.exit(0)
+        notepad_alias = "alias notepad=\"/c/Program\ Files\ \(x86\)/Notepad++/notepad++.exe\"\n"
+        aliases_string_buf += "\n" + notepad_alias
+        shortcut_alias = SHORTCUT_ALIAS_INCOMP + f"notepad {ALIASES_FILENAME}\n"
+        aliases_string_buf += shortcut_alias
+        target_file = file_writer(ALIASES_FILENAME, aliases_string_buf)
+        print(f"Generated {target_file} in {os.getcwd()} for git")
+    else:
+        print("git not found, might not be installed, not creating alias file..")
 
-    # This is the path for MinGW64
-    username = getpass.getuser()
-    os.chdir(f"C:/msys64/home/{username}")
-    target_file = file_writer(ALIASES_FILENAME, aliases_string_buf)
-    print(f"Generated {target_file} in {os.getcwd()} for MinGW64")
+    which_result = which(WIN_MSYS2_CMD)
+    if which_result is not None:
+        # This is the path for MinGW64
+        username = getpass.getuser()
+        os.chdir(f"C:/msys64/home/{username}")
+        target_file = file_writer(ALIASES_FILENAME, aliases_string_buf)
+        print(f"Generated {target_file} in {os.getcwd()} for MinGW64")
+    else:
+        print("MinGW64 not found, might not be installed, not creating alias file..")
+
 
 def generate_unix_aliases():
     os.chdir("~")
