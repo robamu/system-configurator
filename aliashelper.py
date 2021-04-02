@@ -67,7 +67,7 @@ def generate_windows_aliases():
     aliases_string_buf = GENERIC_ALIASES
     notepad_alias = "alias notepad=\"/c/Program\ Files\ \(x86\)/Notepad++/notepad++.exe\"\n"
     aliases_string_buf += linesep + notepad_alias
-    shortcut_alias = SHORTCUT_ALIAS_INCOMP + f"notepad {ALIASES_FILENAME}{linesep}"
+    shortcut_alias = SHORTCUT_ALIAS_INCOMP + f"notepad {ALIASES_FILENAME}'{linesep}"
     aliases_string_buf += shortcut_alias
     aliases_string_buf += SOURCE_ALIAS
 
@@ -107,7 +107,7 @@ def generate_unix_aliases():
             sys.exit(0)
     aliases_string_buf = GENERIC_ALIASES
     unix_editor = prompt_unix_editor()
-    shortcut_alias = SHORTCUT_ALIAS_INCOMP + f"{unix_editor} {ALIASES_FILENAME}\n"
+    shortcut_alias = SHORTCUT_ALIAS_INCOMP + f"{unix_editor} {ALIASES_FILENAME}'{linesep}"
     aliases_string_buf += shortcut_alias
     aliases_string_buf += SOURCE_ALIAS
     if DISCARD_APPEND_MODE:
