@@ -96,13 +96,14 @@ def generate_windows_aliases():
 
 
 def generate_unix_aliases():
+    print("Generting Unix aliases..")
     os.chdir(os.getenv("HOME"))
-    if os.path.isfile(".bash_aliases") and not TEST_MODE:
+    if os.path.isfile(".bash_aliases"):
         print(f"{ALIASES_FILENAME} file already exists")
         if DISCARD_APPEND_MODE:
             with open(ALIASES_FILENAME, "r") as file:
                 current_file_string_buf = file.read()
-        else:
+        elif not TEST_MODE:
             sys.exit(0)
     aliases_string_buf = GENERIC_ALIASES
     unix_editor = prompt_unix_editor()
