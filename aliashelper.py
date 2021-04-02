@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+#-*- coding: utf-8 -*-
 """
 Python utility to set up common and useful aliases
 """
