@@ -113,11 +113,11 @@ def generate_unix_aliases():
         aliases_list = aliases_string_buf.splitlines()
         aliases_string_buf = ""
         print("Discarding any aliases already contained in former aliases list..")
-        for alias in aliases_list:
-            if alias not in current_file_string_buf:
-                print(f"Discarding: {alias}")
+        for new_alias in aliases_list:
+            if new_alias in current_file_string_buf:
+                print(f"Discarding: {new_alias}")
             else:
-                aliases_string_buf += f"{alias}\n"
+                aliases_string_buf += f"{new_alias}\n"
         print("Aliases buffer which will be appended to former alias file: ")
         print(aliases_string_buf)
         print("End of appended alias list")
