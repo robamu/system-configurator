@@ -114,7 +114,11 @@ def generate_unix_aliases():
         aliases_string_buf = ""
         for alias in aliases_list:
             if alias not in current_file_string_buf:
+                print(f"Alias {alias} is already contained, discarding it from appended aliases")
                 aliases_string_buf += alias
+        print("Aliases buffer which will be appended to former alias file: ")
+        print(aliases_string_buf)
+        print("End of appended alias list")
         aliases_string_buf += "\n"
         aliases_string_buf += current_file_string_buf
     which_result = which("apt-get")
