@@ -92,7 +92,7 @@ def generate_windows_aliases():
 
 
 def generate_unix_aliases():
-    os.chdir("~")
+    os.chdir(os.getenv("HOME"))
     if os.path.isfile(".bash_aliases") and not TEST_MODE:
         print(f"{ALIASES_FILENAME} file already exists")
         sys.exit(0)
@@ -100,6 +100,7 @@ def generate_unix_aliases():
     unix_editor = prompt_unix_editor()
     shortcut_alias = SHORTCUT_ALIAS_INCOMP + f"{unix_editor} {ALIASES_FILENAME}\n"
     aliases_string_buf += shortcut_alias
+    aliases_string_buf += SOURCE_ALIAS
     which_result = which("apt-get")
     if which_result is not None:
         aliases_string_buf += UNIX_APT_UPDATE_ALIAS
@@ -110,7 +111,7 @@ def generate_unix_aliases():
 def prompt_unix_editor() -> str:
     print("Please enter editor by ID: ")
     while True:
-        for key, value in EDITOR_SELECTION:
+        for key, value in EDITOR_SELECTION.items():
             print(f"{key}: {value}")
         editor_id = input("Please enter editor by ID: ")
         if not editor_id.isdigit():
