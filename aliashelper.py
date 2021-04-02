@@ -122,7 +122,7 @@ def generate_unix_aliases():
         print("Aliases buffer which will be appended to former alias file: ")
         print(aliases_string_buf)
         print("End of appended alias list")
-        aliases_string_buf += {linesep}
+        aliases_string_buf += linesep
         aliases_string_buf += current_file_string_buf
     which_result = which("apt-get")
     if which_result is not None:
