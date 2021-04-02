@@ -37,9 +37,12 @@ EDITOR_SELECTION = {
     3: "custom"
 }
 
+UNIX_APT_UPDATE_ALIAS = "alias updatesys=\"sudo apt-get update && sudo apt-get upgrade\"\n"
+UNIX_PAC_UPDATE_ALIAS = "alias updatesys=\"sudo pacman -Syu\"\n"
 
 WIN_MSYS2_CMD = "msys2_shell.cmd"
 WIN_MINGW64_ARGS = "-mingw64 -c"
+WIN_MINGW64_UPDATE_ALIAS = "alias updatesys=\"pacman -Syu\"\n" 
 WIN_MINGW64_CMD = f"{WIN_MSYS2_CMD} {WIN_MINGW64_ARGS}"
 
 
@@ -95,6 +98,9 @@ def generate_unix_aliases():
     unix_editor = prompt_unix_editor()
     shortcut_alias = SHORTCUT_ALIAS_INCOMP + f"{unix_editor} {ALIASES_FILENAME}\n"
     aliases_string_buf += shortcut_alias
+    which_result = which("apt-get")
+    if which_result is not None:
+        aliases_string_buf += UNIX_APT_UPDATE_ALIAS
     target_file = file_writer(ALIASES_FILENAME, aliases_string_buf)
     print(f"Generated {target_file} in {os.getcwd()}")
 
