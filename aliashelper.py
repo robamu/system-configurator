@@ -12,7 +12,9 @@ from shutil import which
 TEST_MODE = True
 TEST_FILENAME = "test_aliases.txt"
 ALIASES_FILENAME = ".bash_aliases"
-
+# This mode will store the current alias file, discard any entries in the new alias buffer which
+# are already contained in the former alias file and then append the aliases at the end
+DISCARD_APPEND_MODE = True
 
 GENERIC_ALIASES = \
     f"alias gits='git status'\n" \
@@ -97,12 +99,24 @@ def generate_unix_aliases():
     os.chdir(os.getenv("HOME"))
     if os.path.isfile(".bash_aliases") and not TEST_MODE:
         print(f"{ALIASES_FILENAME} file already exists")
-        sys.exit(0)
+        if DISCARD_APPEND_MODE:
+            with open(ALIASES_FILENAME, "r") as file:
+                current_file_string_buf = file.read()
+        else:
+            sys.exit(0)
     aliases_string_buf = GENERIC_ALIASES
     unix_editor = prompt_unix_editor()
     shortcut_alias = SHORTCUT_ALIAS_INCOMP + f"{unix_editor} {ALIASES_FILENAME}\n"
     aliases_string_buf += shortcut_alias
     aliases_string_buf += SOURCE_ALIAS
+    if DISCARD_APPEND_MODE:
+        aliases_list = aliases_string_buf.splitlines()
+        aliases_string_buf = ""
+        for alias in aliases_list:
+            if alias not in current_file_string_buf:
+                aliases_string_buf += alias
+        aliases_string_buf += "\n"
+        aliases_string_buf += current_file_string_buf
     which_result = which("apt-get")
     if which_result is not None:
         aliases_string_buf += UNIX_APT_UPDATE_ALIAS
