@@ -6,6 +6,7 @@ Python utility to set up common and useful aliases
 import os
 import sys
 import getpass
+from os import linesep
 from shutil import which
 
 # Configuration
@@ -17,21 +18,21 @@ ALIASES_FILENAME = ".bash_aliases"
 DISCARD_APPEND_MODE = True
 
 GENERIC_ALIASES = \
-    f"alias gits='git status'\n" \
-    f"alias gita='git add'\n" \
-    f"alias gitaa='git add .'\n" \
-    f"alias gitc='git commit'\n" \
-    f"alias gitd='git diff'\n" \
-    f"alias gitds='git diff --staged'\n" \
-    f"alias gitm='git merge'\n" \
-    f"alias gitpl='git pull'\n" \
-    f"alias gitl='git log'\n" \
+    f"alias gits='git status'{linesep}" \
+    f"alias gita='git add'{linesep}" \
+    f"alias gitaa='git add .'{linesep}" \
+    f"alias gitc='git commit'{linesep}" \
+    f"alias gitd='git diff'{linesep}" \
+    f"alias gitds='git diff --staged'{linesep}" \
+    f"alias gitm='git merge'{linesep}" \
+    f"alias gitpl='git pull'{linesep}" \
+    f"alias gitl='git log'{linesep}" \
     f"alias gitpu='git push'\n" \
-    f"alias gitrmu='git remote update --prune'\n\n" \
-    f"alias ..='cd ..'\n" \
-    f"alias ...='cd ../..'\n" \
-    f"alias ....='cd ../../..'\n"
-SOURCE_ALIAS = f"alias salias='cd ~ && source {ALIASES_FILENAME}'\n"
+    f"alias gitrmu='git remote update --prune'{linesep}{linesep}" \
+    f"alias ..='cd ..'{linesep}" \
+    f"alias ...='cd ../..'{linesep}" \
+    f"alias ....='cd ../../..'{linesep}"
+SOURCE_ALIAS = f"alias salias='cd ~ && source {ALIASES_FILENAME}'{linesep}"
 SHORTCUT_ALIAS_INCOMP = f"alias shortcut='cd ~ && "
 EDITOR_SELECTION = {
     0: "gedit",
@@ -40,12 +41,12 @@ EDITOR_SELECTION = {
     3: "custom"
 }
 
-UNIX_APT_UPDATE_ALIAS = "alias updatesys=\"sudo apt-get update && sudo apt-get upgrade\"\n"
-UNIX_PAC_UPDATE_ALIAS = "alias updatesys=\"sudo pacman -Syu\"\n"
+UNIX_APT_UPDATE_ALIAS = f"alias updatesys=\"sudo apt-get update && sudo apt-get upgrade\"{linesep}"
+UNIX_PAC_UPDATE_ALIAS = f"alias updatesys=\"sudo pacman -Syu\"{linesep}"
 
 WIN_MSYS2_CMD = "msys2_shell.cmd"
 WIN_MINGW64_ARGS = "-mingw64 -c"
-WIN_MINGW64_UPDATE_ALIAS = "alias updatesys=\"pacman -Syu\"\n" 
+WIN_MINGW64_UPDATE_ALIAS = f"alias updatesys=\"pacman -Syu\"{linesep}"
 WIN_MINGW64_CMD = f"{WIN_MSYS2_CMD} {WIN_MINGW64_ARGS}"
 
 
@@ -65,8 +66,8 @@ def main():
 def generate_windows_aliases():
     aliases_string_buf = GENERIC_ALIASES
     notepad_alias = "alias notepad=\"/c/Program\ Files\ \(x86\)/Notepad++/notepad++.exe\"\n"
-    aliases_string_buf += "\n" + notepad_alias
-    shortcut_alias = SHORTCUT_ALIAS_INCOMP + f"notepad {ALIASES_FILENAME}\n"
+    aliases_string_buf += linesep + notepad_alias
+    shortcut_alias = SHORTCUT_ALIAS_INCOMP + f"notepad {ALIASES_FILENAME}{linesep}"
     aliases_string_buf += shortcut_alias
     aliases_string_buf += SOURCE_ALIAS
 
@@ -117,11 +118,11 @@ def generate_unix_aliases():
             if new_alias in current_file_string_buf:
                 print(f"Discarding: {new_alias}")
             else:
-                aliases_string_buf += f"{new_alias}\n"
+                aliases_string_buf += f"{new_alias}{linesep}"
         print("Aliases buffer which will be appended to former alias file: ")
         print(aliases_string_buf)
         print("End of appended alias list")
-        aliases_string_buf += "\n"
+        aliases_string_buf += {linesep}
         aliases_string_buf += current_file_string_buf
     which_result = which("apt-get")
     if which_result is not None:
