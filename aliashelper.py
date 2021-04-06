@@ -10,7 +10,7 @@ from os import linesep
 from shutil import which
 
 # Configuration
-TEST_MODE = True
+TEST_MODE = False
 TEST_FILENAME = "test_aliases.txt"
 ALIASES_FILENAME = ".bash_aliases"
 # This mode will store the current alias file, discard any entries in the new alias buffer which
@@ -98,6 +98,7 @@ def generate_windows_aliases():
 def generate_unix_aliases():
     print("Generting Unix aliases..")
     os.chdir(os.getenv("HOME"))
+    current_file_string_bug = ""
     if os.path.isfile(".bash_aliases"):
         print(f"{ALIASES_FILENAME} file already exists")
         if DISCARD_APPEND_MODE:
@@ -110,7 +111,7 @@ def generate_unix_aliases():
     shortcut_alias = SHORTCUT_ALIAS_INCOMP + f"{unix_editor} {ALIASES_FILENAME}'{linesep}"
     aliases_string_buf += shortcut_alias
     aliases_string_buf += SOURCE_ALIAS
-    if DISCARD_APPEND_MODE:
+    if DISCARD_APPEND_MODE and current_file_string_bug != "":
         aliases_list = aliases_string_buf.splitlines()
         aliases_string_buf = ""
         print("Discarding any aliases already contained in former aliases list..")
@@ -127,8 +128,16 @@ def generate_unix_aliases():
     which_result = which("apt-get")
     if which_result is not None:
         aliases_string_buf += UNIX_APT_UPDATE_ALIAS
+    if os.path.isdir("/mnt/c/"):
+        notepad_alias = "alias notepad=\"/mnt/c/Program\ Files\ \(x86\)/Notepad++/notepad++.exe\"\n"
+        confirm = input("Detected Linux platform might be WSL. Generate notepad++ alias? [y/n]: ")
+        if confirm in ["y", "yes", "1"]:
+            aliases_string_buf += notepad_alias
     target_file = file_writer(ALIASES_FILENAME, aliases_string_buf)
     print(f"Generated {target_file} in {os.getcwd()}")
+    print(f"Sourcing {target_file}..")
+    if(os.path.isfile(".bash_aliases")):
+        os.system("/bin/bash -c \"source .bash_aliases\"")
 
 
 def prompt_unix_editor() -> str:
