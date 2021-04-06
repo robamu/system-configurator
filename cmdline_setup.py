@@ -11,6 +11,8 @@ from shutil import which
 
 # Configuration
 TEST_MODE = False
+CONFIGURE_GIT = True
+DEFAULT_GIT_CRED_CACHE = 900
 TEST_FILENAME = "test_aliases.txt"
 ALIASES_FILENAME = ".bash_aliases"
 # This mode will store the current alias file, discard any entries in the new alias buffer which
