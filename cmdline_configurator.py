@@ -40,7 +40,7 @@ GENERIC_ALIASES = \
 SOURCE_ALIAS = f"alias salias='cd ~ && source {ALIASES_FILENAME}'{linesep}"
 SHORTCUT_ALIAS_INCOMP = f"alias shortcut='cd ~ && "
 
-GIT_CRED_CACHE_CMD = f"git config --global "
+GIT_CRED_CACHE_CMD = f"git config --global " \
                      f"credential.helper 'cache --timeout={GIT_CRED_CACHE_TIMEOUT}'"
 EDITOR_SELECTION = {
     0: "gedit",
