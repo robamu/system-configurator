@@ -1,8 +1,7 @@
-# aliases-helper
+# Command Line Configurator Utility
 
-Python script to set up aliases in a new Unix environment or for MinGW and git on Windows
-The flag `TEST_MODE` can be used to generate test files first before overwriting existing
-`.bash_aliases` files.
+Python script to set up the command line environment in a new Unix environment or for MinGW and 
+git on Windows.
 
 # Windows
 
