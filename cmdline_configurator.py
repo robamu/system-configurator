@@ -10,14 +10,17 @@ from os import linesep
 from shutil import which
 
 # Configuration
-TEST_MODE = False
-CONFIGURE_GIT = True
-DEFAULT_GIT_CRED_CACHE = 900
-TEST_FILENAME = "test_aliases.txt"
-ALIASES_FILENAME = ".bash_aliases"
+ALIAS_TEST_MODE = False
 # This mode will store the current alias file, discard any entries in the new alias buffer which
 # are already contained in the former alias file and then append the aliases at the end
 DISCARD_APPEND_MODE = True
+
+GIT_CACHE_CREDENTIALS = True
+GIT_CRED_CACHE_TIMEOUT = 900
+
+TEST_FILENAME = "test_aliases.txt"
+ALIASES_FILENAME = ".bash_aliases"
+
 
 GENERIC_ALIASES = \
     f"alias gits='git status'{linesep}" \
@@ -36,6 +39,9 @@ GENERIC_ALIASES = \
     f"alias ....='cd ../../..'{linesep}"
 SOURCE_ALIAS = f"alias salias='cd ~ && source {ALIASES_FILENAME}'{linesep}"
 SHORTCUT_ALIAS_INCOMP = f"alias shortcut='cd ~ && "
+
+GIT_CRED_CACHE_CMD = f"git config --global "
+                     f"credential.helper 'cache --timeout={GIT_CRED_CACHE_TIMEOUT}'"
 EDITOR_SELECTION = {
     0: "gedit",
     1: "vim",
@@ -78,11 +84,14 @@ def generate_windows_aliases():
         print("Setting up aliases for git..")
         # This is the path for git
         os.chdir(os.getenv('userprofile'))
-        if os.path.isfile(".bash_aliases") and not TEST_MODE:
+        if os.path.isfile(".bash_aliases") and not ALIAS_TEST_MODE:
             print(f"{ALIASES_FILENAME} file already exists")
             sys.exit(0)
         target_file = file_writer(ALIASES_FILENAME, aliases_string_buf)
         print(f"Generated {target_file} in {os.getcwd()} for git")
+        if GIT_CACHE_CREDENTIALS:
+            print(f"Configuring git to store credentials for {GIT_CRED_CACHE_TIMEOUT} seconds")
+            os.system(GIT_CRED_CACHE_CMD)
     else:
         print("git not found, might not be installed, not creating alias file..")
 
@@ -106,7 +115,7 @@ def generate_unix_aliases():
         if DISCARD_APPEND_MODE:
             with open(ALIASES_FILENAME, "r") as file:
                 current_file_string_buf = file.read()
-        elif not TEST_MODE:
+        elif not ALIAS_TEST_MODE:
             sys.exit(0)
     aliases_string_buf = GENERIC_ALIASES
     unix_editor = prompt_unix_editor()
@@ -140,6 +149,10 @@ def generate_unix_aliases():
     print(f"Sourcing {target_file}..")
     if(os.path.isfile(".bash_aliases")):
         os.system("/bin/bash -c \"source .bash_aliases\"")
+    if GIT_CACHE_CREDENTIALS:
+        print(f"Configuring git to store credentials for {GIT_CRED_CACHE_TIMEOUT} seconds")
+        os.system(GIT_CRED_CACHE_CMD)
+        
 
 
 def prompt_unix_editor() -> str:
@@ -161,7 +174,7 @@ def prompt_unix_editor() -> str:
 
 
 def file_writer(target_filename, alias_buffer: str) -> str:
-    if not TEST_MODE:
+    if not ALIAS_TEST_MODE:
         target_file = target_filename
         with open(target_file, "w") as file:
             file.write(alias_buffer)
