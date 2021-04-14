@@ -39,6 +39,7 @@ GENERIC_ALIASES = \
     f"alias ...='cd ../..'\n" \
     f"alias ....='cd ../../..'\n"
 SOURCE_ALIAS = f"alias salias='cd ~ && source {ALIASES_FILENAME}'\n"
+SOURCE_ALIAS_GIT_WIN = f"alias salias='cd ~ && source .bashrc'\n"
 SHORTCUT_ALIAS_INCOMP = f"alias shortcut='cd ~ && "
 
 GIT_CRED_CACHE_CMD = f"git config --global " \
@@ -76,19 +77,20 @@ def generate_windows_aliases():
     aliases_string_buf = GENERIC_ALIASES
     notepad_alias = "alias notepad=\"/c/Program\ Files\ \(x86\)/Notepad++/notepad++.exe\"\n"
     aliases_string_buf += "\n" + notepad_alias
-    shortcut_alias = SHORTCUT_ALIAS_INCOMP + f"notepad {ALIASES_FILENAME}'\n"
-    aliases_string_buf += shortcut_alias
-    aliases_string_buf += SOURCE_ALIAS
+
 
     which_result = which("git")
     if which_result is not None:
         print("Setting up aliases for git..")
         # This is the path for git
+        shortcut_alias = SHORTCUT_ALIAS_INCOMP + f"notepad .bashrc'\n"
+        aliases_string_buf += shortcut_alias
+        aliases_string_buf += SOURCE_ALIAS_GIT_WIN
         os.chdir(os.getenv('userprofile'))
-        if os.path.isfile(".bash_aliases") and not DISCARD_APPEND_MODE:
-            print(f"{ALIASES_FILENAME} file already exists")
+        if os.path.isfile(".bashrc") and not DISCARD_APPEND_MODE:
+            print(f".bashrc file already exists")
             sys.exit(0)
-        target_file = file_writer(ALIASES_FILENAME, aliases_string_buf)
+        target_file = file_writer(".bashrc", aliases_string_buf)
         print(f"Generated {target_file} in {os.getcwd()} for git")
         if GIT_CACHE_CREDENTIALS:
             print(f"Configuring git to store credentials for {GIT_CRED_CACHE_TIMEOUT} seconds")
@@ -99,6 +101,8 @@ def generate_windows_aliases():
     which_result = which(WIN_MSYS2_CMD)
     if which_result is not None:
         print("Setting up aliases for MinGW64..")
+        shortcut_alias = SHORTCUT_ALIAS_INCOMP + f"notepad {ALIASES_FILENAME}'\n"
+        aliases_string_buf += SOURCE_ALIAS
         # This is the path for MinGW64
         username = getpass.getuser()
         os.chdir(f"C:/msys64/home/{username}")
