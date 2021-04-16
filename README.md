@@ -8,3 +8,9 @@ git on Windows.
 On Windows, a `.bash_aliases` file will be created both for `MinGW64` and `git`.
 Currently, the user needs to take care of enabling use of the `bash_aliases` file in the 
 `.bashrc` file of MinGW64 by uncommenting the respective lines.
+
+# Linux
+
+```sh
+sudo apt-get install git vim-gtk3
+```
