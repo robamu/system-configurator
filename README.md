@@ -11,6 +11,7 @@ development environment in a new Unix environment or for MinGW and git on Window
 3. Install [git for Windows](https://git-scm.com/download/win)
 4. Install [gpg4win](https://www.gpg4win.org/)
 5. Install [VS Code](https://code.visualstudio.com/)
+6. Install [WSL2](https://docs.microsoft.com/en-us/windows/wsl/install-win10)
 
 On Windows, a `.bash_aliases` file will be created both for `MinGW64` and `git`.
 Currently, the user needs to take care of enabling use of the `bash_aliases` file in the 
