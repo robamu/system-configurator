@@ -1,7 +1,8 @@
 # Command Line Configurator Utility
 
-Python script to set up the command line and development environment in a new Unix environment or
-for MinGW and git on Windows.
+This is a personal README which includes steps and utilities to set up a convenient development
+environment on Windows and Linux. It includes a Python script to set up the command line and
+development environment in a new Unix environment or for MinGW and git on Windows.
 
 # Windows
 
@@ -17,7 +18,6 @@ Currently, the user needs to take care of enabling use of the `bash_aliases` fil
 
 # Ubuntu
 
-
 1. Install git, vim-gtk3 and GPA
 
 ```sh
@@ -29,3 +29,23 @@ sudo apt-get install git vim-gtk3 gpa
 ```sh
 sudo snap install --classic code
 ```
+
+# Generating and signing commits with GPG
+
+Follow [this guide](https://git-scm.com/book/en/v2/Git-Tools-Signing-Your-Work).
+
+After generating a key, the secret key can be exported with the following command
+
+```sh
+gpg --output private.pgp --armor --export-secret-key <username/mail or key ID>
+```
+
+And then import this file with `gpa` or Kleopatra.
+
+You can export the public key with the following command
+
+```sh
+gpg --output public.pgp --armor --export <username/mail or key ID>
+```
+
+This key can be uploaded to Github, Gitlab to allow verification of commits
