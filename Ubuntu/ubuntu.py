@@ -24,6 +24,7 @@ SETTING_STRING = \
 
 
 def main():
+
     os.system(MINIMIZE_TO_DOCK_CMD)
     if INSTALL_SPOTIFY:
         os.system("sudo snap install spotify")
