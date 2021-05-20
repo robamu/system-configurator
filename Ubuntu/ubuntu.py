@@ -45,6 +45,29 @@ def main():
         os.system("sudo apt-get gdebi python3-pip")
     if prompt_yes_no("branch display in terminal", PromptType.ACTIVATE):
         append_show_git_branch_setting()
+    if prompt_yes_no("Docker"):
+        # Add dependencies
+        os.system(
+            "sudo apt-get install apt-transport-https lsb-release ca-certificates"
+            "gnupg"
+        )
+        # Add GPG key
+        os.system(
+            "curl -fsSL https://download.docker.com/linux/ubuntu/gpg | "
+            "sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg"
+        )
+        # Add package source
+        os.system(
+            "echo \"deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] "
+            "https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable\" | "
+            "sudo tee /etc/apt/sources.list.d/docker.list > /dev/null"
+        )
+        # Install docker engine
+        os.system("sudo apt-get update")
+        os.system("sudo apt-get install docker-ce docker-ce-cli containerd.io")
+        if prompt_yes_no("add user to the docker group", PromptType.INTENT):
+            os.system("sudo groupadd docker")
+            os.system("sudo usermod -aG docker $USER")
 
 
 def append_show_git_branch_setting():
