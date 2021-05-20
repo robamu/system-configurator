@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import os
 import enum
+import webbrowser
 
 
 MINIMIZE_TO_DOCK_CMD = "gsettings set org.gnome.shell.extensions.dash-to-dock click-action 'minimize'"
@@ -35,8 +36,13 @@ def main():
         os.system("sudo snap install spotify")
     if prompt_yes_no("Discord"):
         os.system("sudo snap install discord")
+    if prompt_yes_no("PyCharm Professional"):
+        os.system("sudo snap install pycharm-professional --classic")
     if prompt_yes_no("Visual Studio Code"):
         os.system("sudo snap install --classic code")
+    if prompt_yes_no("Eclipse"):
+        print("Please use installer..")
+        webbrowser.open("https://www.eclipse.org/downloads/packages/installer")
     if prompt_yes_no("add user to the dialout group", PromptType.INTENT):
         os.system("sudo adduser $USER dialout")
     if prompt_yes_no("ubuntu-restricted-extras and ubuntu-restricted-addons"):
