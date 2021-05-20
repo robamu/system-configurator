@@ -1,12 +1,9 @@
 #!/usr/bin/env python3
 import os
+import enum
+
 
 MINIMIZE_TO_DOCK_CMD = "gsettings set org.gnome.shell.extensions.dash-to-dock click-action 'minimize'"
-INSTALL_SPOTIFY = True
-INSTALL_DISCORD = True
-INSTALL_EXTRA_PACKAGES = True
-INSTALL_PIP = True
-SHOW_GIT_BRANCH_TERMINAL = True
 
 SETTING_STRING = \
     "# Show git branch name\n" \
@@ -23,18 +20,30 @@ SETTING_STRING = \
     "unset color_prompt force_color_prompt\n"
 
 
+class PromptType(enum.Enum):
+    from enum import auto
+    INSTALL = auto()
+    ACTIVATE = auto()
+    INTENT = auto()
+    CUSTOM = auto()
+
+
 def main():
 
     os.system(MINIMIZE_TO_DOCK_CMD)
-    if INSTALL_SPOTIFY:
+    if prompt_yes_no("Spotify"):
         os.system("sudo snap install spotify")
-    os.system("sudo snap install discord")
-    os.system("sudo snap install --classic code")
-    os.system("sudo adduser $USER dialout")
-    os.system("sudo apt-get install ubuntu-restricted-extras ubuntu-restricted-addons")
-    os.system("sudo apt-get python3-pip")
-
-    if SHOW_GIT_BRANCH_TERMINAL:
+    if prompt_yes_no("Discord"):
+        os.system("sudo snap install discord")
+    if prompt_yes_no("Visual Studio Code"):
+        os.system("sudo snap install --classic code")
+    if prompt_yes_no("add user to the dialout group", PromptType.INTENT):
+        os.system("sudo adduser $USER dialout")
+    if prompt_yes_no("ubuntu-restricted-extras and ubuntu-restricted-addons"):
+        os.system("sudo apt-get install ubuntu-restricted-extras ubuntu-restricted-addons")
+    if prompt_yes_no("pip and gdebi"):
+        os.system("sudo apt-get gdebi python3-pip")
+    if prompt_yes_no("branch display in terminal", PromptType.ACTIVATE):
         append_show_git_branch_setting()
 
 
@@ -45,6 +54,23 @@ def append_show_git_branch_setting():
 		file.write(SETTING_STRING)
 		file.write("\n")
 		print(".bashrc manipulated successfully to show git branch in terminal")
+
+
+def prompt_yes_no(info_string: str, prompt_type: PromptType = PromptType.INSTALL):
+    if prompt_type == PromptType.INSTALL:
+        input_text = f"Do you want to install {info_string}? [y/n]: "
+    elif prompt_type == PromptType.ACTIVATE:
+        input_text = f"Do you want to activate {info_string}? [y/n]: "
+    elif prompt_type == PromptType.INTENT:
+        input_text = f"Do you want to {info_string}? [y/n]: "
+    else:
+        input_text = info_string
+    while True:
+        yes_or_no = input(input_text)
+        if yes_or_no.lower() in ["y", "yes", "1"]:
+            return True
+        else:
+            return False
 
 
 if __name__ == "__main__":
