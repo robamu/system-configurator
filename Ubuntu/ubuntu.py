@@ -55,6 +55,15 @@ def main():
         append_show_git_branch_setting()
     if prompt_yes_no("Docker"):
         install_docker()
+    if prompt_yes_no("generate ssh key", PromptType.INTENT):
+        mail = ""
+        while True:
+            mail = input("Enter mail address used for ssh key")
+            confirm = input(f"Confirm mail: {mail}")
+            if confirm in ['yes','y', '1']:
+                break
+        os.system(f"ssh-keygen -t ed25519 {mail}")
+        print("Key generated, but still needs to be added with ssh-add")
 
 
 def install_docker():
