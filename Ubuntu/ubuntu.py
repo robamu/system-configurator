@@ -30,8 +30,8 @@ class PromptType(enum.Enum):
 
 
 def main():
-
-    os.system(MINIMIZE_TO_DOCK_CMD)
+    if prompt_yes_no("Minimize to Dock", PromptType.ACTIVATE):
+        os.system(MINIMIZE_TO_DOCK_CMD)
     if prompt_yes_no("Spotify"):
         os.system("sudo snap install spotify")
     if prompt_yes_no("Discord"):
@@ -40,6 +40,8 @@ def main():
         os.system("sudo snap install pycharm-professional --classic")
     if prompt_yes_no("Visual Studio Code"):
         os.system("sudo snap install --classic code")
+    if prompt_yes_no("Python for VS Code"):
+        os.system("code --install-extension ms-python.python")
     if prompt_yes_no("Eclipse"):
         print("Please use installer..")
         webbrowser.open("https://www.eclipse.org/downloads/packages/installer")
@@ -48,32 +50,36 @@ def main():
     if prompt_yes_no("ubuntu-restricted-extras and ubuntu-restricted-addons"):
         os.system("sudo apt-get install ubuntu-restricted-extras ubuntu-restricted-addons")
     if prompt_yes_no("pip and gdebi"):
-        os.system("sudo apt-get gdebi python3-pip")
+        os.system("sudo apt-get install gdebi python3-pip")
     if prompt_yes_no("branch display in terminal", PromptType.ACTIVATE):
         append_show_git_branch_setting()
     if prompt_yes_no("Docker"):
-        # Add dependencies
-        os.system(
-            "sudo apt-get install apt-transport-https lsb-release ca-certificates"
-            "gnupg"
-        )
-        # Add GPG key
-        os.system(
-            "curl -fsSL https://download.docker.com/linux/ubuntu/gpg | "
-            "sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg"
-        )
-        # Add package source
-        os.system(
-            "echo \"deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] "
-            "https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable\" | "
-            "sudo tee /etc/apt/sources.list.d/docker.list > /dev/null"
-        )
-        # Install docker engine
-        os.system("sudo apt-get update")
-        os.system("sudo apt-get install docker-ce docker-ce-cli containerd.io")
-        if prompt_yes_no("add user to the docker group", PromptType.INTENT):
-            os.system("sudo groupadd docker")
-            os.system("sudo usermod -aG docker $USER")
+        install_docker()
+
+
+def install_docker():
+    # Add dependencies
+    os.system(
+        "sudo apt-get install apt-transport-https lsb-release ca-certificates"
+        "gnupg curl"
+    )
+    # Add GPG key
+    os.system(
+        "curl -fsSL https://download.docker.com/linux/ubuntu/gpg | "
+        "sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg"
+    )
+    # Add package source
+    os.system(
+        "echo \"deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] "
+        "https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable\" | "
+        "sudo tee /etc/apt/sources.list.d/docker.list > /dev/null"
+    )
+    # Install docker engine
+    os.system("sudo apt-get update")
+    os.system("sudo apt-get install docker-ce docker-ce-cli containerd.io")
+    if prompt_yes_no("add user to the docker group", PromptType.INTENT):
+        os.system("sudo groupadd docker")
+        os.system("sudo usermod -aG docker $USER")
 
 
 def append_show_git_branch_setting():
