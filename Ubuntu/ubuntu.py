@@ -63,7 +63,9 @@ def main():
             if confirm in ['yes','y', '1']:
                 break
         os.system(f"ssh-keygen -t ed25519 {mail}")
-        print("Key generated, but still needs to be added with ssh-add")
+        print("SSH key generated, but still needs to be added with ssh-add")
+    if prompt_yes_no("generate gpg key", PromptType.INTENT):
+        generate_gpg_key()
 
 
 def install_docker():
@@ -89,6 +91,18 @@ def install_docker():
     if prompt_yes_no("add user to the docker group", PromptType.INTENT):
         os.system("sudo groupadd docker")
         os.system("sudo usermod -aG docker $USER")
+
+
+def generate_gpg_key():
+    print("Existing GPG keys: ")
+    os.system("gpg --list-keys")
+    confirm = input(f"Do you want to generate a new gpg key? [y/n]: ")
+    if confirm not in ['yes','y', '1']:
+        return 
+    os.system("gpg --gen-key")
+    print("GPG key generated, add it with \"git config --global user.signkey <ID>\"")
+    print("You can export the public key with \"gpg --output public.pgp --armor --export <ID>\"")
+    print("You can export the private key with \"gpg --output private.pgp --armor --export-secret-key <ID>\"")
 
 
 def append_show_git_branch_setting():
