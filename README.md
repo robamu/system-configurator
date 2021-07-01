@@ -20,17 +20,7 @@ Currently, the user needs to take care of enabling use of the `bash_aliases` fil
 
 # Ubuntu
 
-1. Install git, vim-gtk3 and GPA
-
-```sh
-sudo apt-get install git vim-gtk3 gpa
-```
-
-2. Install VS Code
-
-```sh
-sudo snap install --classic code
-```
+Python script to install various useful programs can be found in `Ubuntu` folder
 
 # Generating and signing commits with GPG
 

@@ -30,6 +30,8 @@ class PromptType(enum.Enum):
 
 
 def main():
+    if prompt_yes_no("vim-gtk3"):
+        os.system("sudo apt-get install vim-gtk3")
     if prompt_yes_no("Minimize to Dock", PromptType.ACTIVATE):
         os.system(MINIMIZE_TO_DOCK_CMD)
     if prompt_yes_no("Spotify"):
@@ -51,6 +53,10 @@ def main():
         os.system("sudo apt-get install ubuntu-restricted-extras ubuntu-restricted-addons")
     if prompt_yes_no("pip and gdebi"):
         os.system("sudo apt-get install gdebi python3-pip")
+    if prompt_yes_no("cmake"):
+        os.system("sudo apt-get install cmake")
+    if prompt_yes_no("ninja"):
+        os.system("sudo apt-get install ninja-build")
     if prompt_yes_no("branch display in terminal", PromptType.ACTIVATE):
         append_show_git_branch_setting()
     if prompt_yes_no("Docker"):
