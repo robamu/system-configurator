@@ -55,15 +55,8 @@ def main():
         append_show_git_branch_setting()
     if prompt_yes_no("Docker"):
         install_docker()
-    if prompt_yes_no("generate ssh key", PromptType.INTENT):
-        mail = ""
-        while True:
-            mail = input("Enter mail address used for ssh key")
-            confirm = input(f"Confirm mail: {mail}")
-            if confirm in ['yes','y', '1']:
-                break
-        os.system(f"ssh-keygen -t ed25519 {mail}")
-        print("SSH key generated, but still needs to be added with ssh-add")
+    #if prompt_yes_no("generate ssh key", PromptType.INTENT):
+    #    generate_ssh_key()
     if prompt_yes_no("generate gpg key", PromptType.INTENT):
         generate_gpg_key()
 
@@ -130,6 +123,16 @@ def prompt_yes_no(info_string: str, prompt_type: PromptType = PromptType.INSTALL
         else:
             return False
 
+
+def generate_ssh_key():
+    mail = ""
+    while True:
+        mail = input("Enter mail address used for ssh key: ")
+        confirm = input(f"Confirm mail: {mail} [y/n]: ")
+        if confirm in ['yes', 'y', '1']:
+	    break
+    os.system(f"ssh-keygen -t ed25519 {mail}")
+    print("SSH key generated, but still needs to be added with ssh-add")
 
 if __name__ == "__main__":
     main()
