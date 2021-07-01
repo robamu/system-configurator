@@ -64,8 +64,7 @@ def main():
 def install_docker():
     # Add dependencies
     os.system(
-        "sudo apt-get install apt-transport-https lsb-release ca-certificates"
-        "gnupg curl"
+        "sudo apt-get install apt-transport-https lsb-release ca-certificates gnupg curl"
     )
     # Add GPG key
     os.system(
