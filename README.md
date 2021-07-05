@@ -7,12 +7,13 @@ development environment in a new Unix environment or for MinGW and git on Window
 # Windows
 
 1. Install [Notepad++](https://notepad-plus-plus.org/downloads/)
-2. Install [MSYS2](https://www.msys2.org/)
-3. Install [Windows Terminal](https://www.microsoft.com/de-de/p/windows-terminal/9n0dx20hk701?rtc=1&activetab=pivot:overviewtab)
-4. Install [git for Windows](https://git-scm.com/download/win)
-5. Install [VS Code](https://code.visualstudio.com/)
-6. Install [Ninja](https://ninja-build.org/)
-7. Install [WSL2](https://docs.microsoft.com/en-us/windows/wsl/install-win10)
+2. Install [Sublime Text](https://www.sublimetext.com/)
+3. Install [MSYS2](https://www.msys2.org/)
+4. Install [Windows Terminal](https://www.microsoft.com/de-de/p/windows-terminal/9n0dx20hk701?rtc=1&activetab=pivot:overviewtab)
+5. Install [git for Windows](https://git-scm.com/download/win)
+6. Install [VS Code](https://code.visualstudio.com/)
+7. Install [Ninja](https://ninja-build.org/)
+8. Install [WSL2](https://docs.microsoft.com/en-us/windows/wsl/install-win10)
 
 On Windows, a `.bash_aliases` file will be created both for `MinGW64` and `git`.
 Currently, the user needs to take care of enabling use of the `bash_aliases` file in the 
