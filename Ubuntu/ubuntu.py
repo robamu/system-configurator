@@ -59,6 +59,18 @@ def main():
         os.system("sudo apt-get install ninja-build")
     if prompt_yes_no("KeyPassXC"):
         os.system("sudo snap install keypassxc")
+    if prompt_yes_no("Sublime Text"):
+        os.system(
+            "wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | "
+            "sudo apt-key add -"
+        )
+        os.system("sudo apt-get install apt-transport-https")
+        os.system(
+            "echo \"deb https://download.sublimetext.com/ apt/stable/\" | "
+            "sudo tee /etc/apt/sources.list.d/sublime-text.list"
+        )
+        os.system("sudo apt-get update")
+        os.system("sudo apt-get install sublime-text")
     if prompt_yes_no("branch display in terminal", PromptType.ACTIVATE):
         append_show_git_branch_setting()
     if prompt_yes_no("Docker"):
