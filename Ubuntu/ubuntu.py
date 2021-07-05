@@ -57,6 +57,8 @@ def main():
         os.system("sudo apt-get install cmake")
     if prompt_yes_no("ninja"):
         os.system("sudo apt-get install ninja-build")
+    if prompt_yes_no("KeyPassXC"):
+        os.system("sudo snap install keypassxc")
     if prompt_yes_no("branch display in terminal", PromptType.ACTIVATE):
         append_show_git_branch_setting()
     if prompt_yes_no("Docker"):
