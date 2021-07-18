@@ -30,8 +30,10 @@ class PromptType(enum.Enum):
 
 
 def main():
-
-    os.system(MINIMIZE_TO_DOCK_CMD)
+    if prompt_yes_no("vim-gtk3"):
+        os.system("sudo apt-get install vim-gtk3")
+    if prompt_yes_no("Minimize to Dock", PromptType.ACTIVATE):
+        os.system(MINIMIZE_TO_DOCK_CMD)
     if prompt_yes_no("Spotify"):
         os.system("sudo snap install spotify")
     if prompt_yes_no("Discord"):
@@ -40,6 +42,8 @@ def main():
         os.system("sudo snap install pycharm-professional --classic")
     if prompt_yes_no("Visual Studio Code"):
         os.system("sudo snap install --classic code")
+    if prompt_yes_no("Python for VS Code"):
+        os.system("code --install-extension ms-python.python")
     if prompt_yes_no("Eclipse"):
         print("Please use installer..")
         webbrowser.open("https://www.eclipse.org/downloads/packages/installer")
@@ -48,32 +52,69 @@ def main():
     if prompt_yes_no("ubuntu-restricted-extras and ubuntu-restricted-addons"):
         os.system("sudo apt-get install ubuntu-restricted-extras ubuntu-restricted-addons")
     if prompt_yes_no("pip and gdebi"):
-        os.system("sudo apt-get gdebi python3-pip")
+        os.system("sudo apt-get install gdebi python3-pip")
+    if prompt_yes_no("cmake"):
+        os.system("sudo apt-get install cmake")
+    if prompt_yes_no("ninja"):
+        os.system("sudo apt-get install ninja-build")
+    if prompt_yes_no("KeyPassXC"):
+        os.system("sudo snap install keypassxc")
+    if prompt_yes_no("Sublime Text"):
+        os.system(
+            "wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | "
+            "sudo apt-key add -"
+        )
+        os.system("sudo apt-get install apt-transport-https")
+        os.system(
+            "echo \"deb https://download.sublimetext.com/ apt/stable/\" | "
+            "sudo tee /etc/apt/sources.list.d/sublime-text.list"
+        )
+        os.system("sudo apt-get update")
+        os.system("sudo apt-get install sublime-text")
     if prompt_yes_no("branch display in terminal", PromptType.ACTIVATE):
         append_show_git_branch_setting()
     if prompt_yes_no("Docker"):
-        # Add dependencies
-        os.system(
-            "sudo apt-get install apt-transport-https lsb-release ca-certificates"
-            "gnupg"
-        )
-        # Add GPG key
-        os.system(
-            "curl -fsSL https://download.docker.com/linux/ubuntu/gpg | "
-            "sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg"
-        )
-        # Add package source
-        os.system(
-            "echo \"deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] "
-            "https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable\" | "
-            "sudo tee /etc/apt/sources.list.d/docker.list > /dev/null"
-        )
-        # Install docker engine
-        os.system("sudo apt-get update")
-        os.system("sudo apt-get install docker-ce docker-ce-cli containerd.io")
-        if prompt_yes_no("add user to the docker group", PromptType.INTENT):
-            os.system("sudo groupadd docker")
-            os.system("sudo usermod -aG docker $USER")
+        install_docker()
+    #if prompt_yes_no("generate ssh key", PromptType.INTENT):
+    #    generate_ssh_key()
+    if prompt_yes_no("generate gpg key", PromptType.INTENT):
+        generate_gpg_key()
+
+
+def install_docker():
+    # Add dependencies
+    os.system(
+        "sudo apt-get install apt-transport-https lsb-release ca-certificates gnupg curl"
+    )
+    # Add GPG key
+    os.system(
+        "curl -fsSL https://download.docker.com/linux/ubuntu/gpg | "
+        "sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg"
+    )
+    # Add package source
+    os.system(
+        "echo \"deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] "
+        "https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable\" | "
+        "sudo tee /etc/apt/sources.list.d/docker.list > /dev/null"
+    )
+    # Install docker engine
+    os.system("sudo apt-get update")
+    os.system("sudo apt-get install docker-ce docker-ce-cli containerd.io")
+    if prompt_yes_no("add user to the docker group", PromptType.INTENT):
+        os.system("sudo groupadd docker")
+        os.system("sudo usermod -aG docker $USER")
+
+
+def generate_gpg_key():
+    print("Existing GPG keys: ")
+    os.system("gpg --list-keys")
+    confirm = input(f"Do you want to generate a new gpg key? [y/n]: ")
+    if confirm not in ['yes','y', '1']:
+        return 
+    os.system("gpg --gen-key")
+    print("GPG key generated, add it with \"git config --global user.signkey <ID>\"")
+    print("You can export the public key with \"gpg --output public.pgp --armor --export <ID>\"")
+    print("You can export the private key with \"gpg --output private.pgp --armor --export-secret-key <ID>\"")
 
 
 def append_show_git_branch_setting():
@@ -101,6 +142,16 @@ def prompt_yes_no(info_string: str, prompt_type: PromptType = PromptType.INSTALL
         else:
             return False
 
+
+def generate_ssh_key():
+    mail = ""
+    while True:
+        mail = input("Enter mail address used for ssh key: ")
+        confirm = input(f"Confirm mail: {mail} [y/n]: ")
+        if confirm in ['yes', 'y', '1']:
+	    break
+    os.system(f"ssh-keygen -t ed25519 {mail}")
+    print("SSH key generated, but still needs to be added with ssh-add")
 
 if __name__ == "__main__":
     main()
