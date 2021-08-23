@@ -20,6 +20,12 @@ SETTING_STRING = \
     "fi\n" \
     "unset color_prompt force_color_prompt\n"
 
+SETTING_STRING_BETTER= \
+    "term_git_branch='/etc/term-git-branch'" \
+    "# Show git branch where applicable" \
+    "if [ -f  ${term_git_branch} ]; then" \
+    "    . ${term_git_branch}" \
+    "fi"
 
 class PromptType(enum.Enum):
     from enum import auto
@@ -72,6 +78,7 @@ def main():
         os.system("sudo apt-get update")
         os.system("sudo apt-get install sublime-text")
     if prompt_yes_no("branch display in terminal", PromptType.ACTIVATE):
+        os.system("sudo cp scripts/term-git-branch /etc")
         append_show_git_branch_setting()
     if prompt_yes_no("Docker"):
         install_docker()
@@ -121,7 +128,7 @@ def append_show_git_branch_setting():
 	with open(os.path.join(os.path.expanduser('~'), '.bashrc'), "r+") as file:
 		file.seek(0, os.SEEK_END)
 		file.write("\n")
-		file.write(SETTING_STRING)
+		file.write(SETTING_STRING_BETTER)
 		file.write("\n")
 		print(".bashrc manipulated successfully to show git branch in terminal")
 
