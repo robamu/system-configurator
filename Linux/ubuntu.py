@@ -58,7 +58,7 @@ def main():
     if prompt_yes_no("ninja"):
         os.system("sudo apt-get install ninja-build")
     if prompt_yes_no("KeyPassXC"):
-        os.system("sudo snap install keypassxc")
+        os.system("sudo snap install keepassxc")
     if prompt_yes_no("Sublime Text"):
         os.system(
             "wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | "
@@ -149,7 +149,7 @@ def generate_ssh_key():
         mail = input("Enter mail address used for ssh key: ")
         confirm = input(f"Confirm mail: {mail} [y/n]: ")
         if confirm in ['yes', 'y', '1']:
-	    break
+            break
     os.system(f"ssh-keygen -t ed25519 {mail}")
     print("SSH key generated, but still needs to be added with ssh-add")
 
