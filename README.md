@@ -19,6 +19,20 @@ On Windows, a `.bash_aliases` file will be created both for `MinGW64` and `git`.
 Currently, the user needs to take care of enabling use of the `bash_aliases` file in the 
 `.bashrc` file of MinGW64 by uncommenting the respective lines.
 
+## PowerShell
+
+1. Allow executing PowerShell scripts
+   ```ps
+   Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope LocalMachine
+   ```
+
+2. You can create a `Microsoft.Powershell_profile.ps1` file in the `MicrosoftPowerShell`
+   folder which will be loaded when opening PowerShell. An example file is provided in the
+   `Windows/PowerShell` folder
+
+3. It is recommended to install [posh-git](https://github.com/dahlbyk/posh-git) for better
+   git integration
+
 # Ubuntu
 
 Python script to install various useful programs can be found in `Ubuntu` folder
