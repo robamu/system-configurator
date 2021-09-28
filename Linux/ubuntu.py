@@ -20,6 +20,12 @@ SETTING_STRING = \
     "fi\n" \
     "unset color_prompt force_color_prompt\n"
 
+SETTING_STRING_BETTER= \
+    "term_git_branch='/etc/term-git-branch'" \
+    "# Show git branch where applicable" \
+    "if [ -f  ${term_git_branch} ]; then" \
+    "    . ${term_git_branch}" \
+    "fi"
 
 class PromptType(enum.Enum):
     from enum import auto
@@ -57,7 +63,22 @@ def main():
         os.system("sudo apt-get install cmake")
     if prompt_yes_no("ninja"):
         os.system("sudo apt-get install ninja-build")
+    if prompt_yes_no("KeyPassXC"):
+        os.system("sudo snap install keepassxc")
+    if prompt_yes_no("Sublime Text"):
+        os.system(
+            "wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | "
+            "sudo apt-key add -"
+        )
+        os.system("sudo apt-get install apt-transport-https")
+        os.system(
+            "echo \"deb https://download.sublimetext.com/ apt/stable/\" | "
+            "sudo tee /etc/apt/sources.list.d/sublime-text.list"
+        )
+        os.system("sudo apt-get update")
+        os.system("sudo apt-get install sublime-text")
     if prompt_yes_no("branch display in terminal", PromptType.ACTIVATE):
+        os.system("sudo cp scripts/term-git-branch /etc")
         append_show_git_branch_setting()
     if prompt_yes_no("Docker"):
         install_docker()
@@ -107,7 +128,7 @@ def append_show_git_branch_setting():
 	with open(os.path.join(os.path.expanduser('~'), '.bashrc'), "r+") as file:
 		file.seek(0, os.SEEK_END)
 		file.write("\n")
-		file.write(SETTING_STRING)
+		file.write(SETTING_STRING_BETTER)
 		file.write("\n")
 		print(".bashrc manipulated successfully to show git branch in terminal")
 
@@ -135,7 +156,7 @@ def generate_ssh_key():
         mail = input("Enter mail address used for ssh key: ")
         confirm = input(f"Confirm mail: {mail} [y/n]: ")
         if confirm in ['yes', 'y', '1']:
-	    break
+            break
     os.system(f"ssh-keygen -t ed25519 {mail}")
     print("SSH key generated, but still needs to be added with ssh-add")
 
