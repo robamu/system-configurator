@@ -35,7 +35,12 @@ Currently, the user needs to take care of enabling use of the `bash_aliases` fil
 
 # Ubuntu
 
-Python script to install various useful programs can be found in `Ubuntu` folder
+Python script to install various useful programs can be found in `Ubuntu` folder.
+Install git first to clone the script
+
+```sh
+sudo apt-get install git
+```
 
 # Generating and signing commits with GPG
 
@@ -56,3 +61,15 @@ gpg --output public.pgp --armor --export <username/mail or key ID>
 ```
 
 This key can be uploaded to Github, Gitlab to allow verification of commits
+
+# Dual-Boot Configuration
+
+You can disable the grub timeout by opening the `/etc/default/grub` file and setting
+`GRUB_TIMEOUT` to `-1`.
+
+In dual-boot configuration, Linux might mess with Windows times or vice-versa. You can fix this
+by running following command
+
+```sh
+timedatectl set-local-rtc 1 --adjust-system-clock
+```
