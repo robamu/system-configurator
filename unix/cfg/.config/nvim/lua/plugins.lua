@@ -17,6 +17,14 @@ require('packer').startup(function(use)
     "neovim/nvim-lspconfig",
   }
   use {
+    'nvim-treesitter/nvim-treesitter',
+    run = ':TSUpdate'
+  }
+  use {
+    'nvim-telescope/telescope.nvim', tag = '0.1.2',
+    requires = { {'nvim-lua/plenary.nvim'} }
+  }
+  use {
     'andymass/vim-matchup',
     setup = function()
       -- may set any options here

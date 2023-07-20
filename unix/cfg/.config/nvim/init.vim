@@ -6,7 +6,6 @@ filetype off
 
 lua require('plugins')
 
-
 " Latex
 let g:latex_indent_enabled = 1
 let g:latex_fold_envs = 0
@@ -43,6 +42,8 @@ syntax on
 filetype plugin indent on
 set background=dark " or light if you want light mode
 colorscheme gruvbox
+nnoremap <SPACE> <Nop>
+let mapleader=" "
 
 set autoindent
 set timeoutlen=300 " http://stackoverflow.com/questions/2158516/delay-before-o-opens-a-new-line
