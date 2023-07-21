@@ -42,10 +42,9 @@ syntax on
 filetype plugin indent on
 set background=dark " or light if you want light mode
 colorscheme gruvbox
-nnoremap <SPACE> <Nop>
-let mapleader=" "
 
 set autoindent
+set clipboard+=unnamedplus
 set timeoutlen=300 " http://stackoverflow.com/questions/2158516/delay-before-o-opens-a-new-line
 set encoding=utf-8
 set scrolloff=2
@@ -53,6 +52,11 @@ set noshowmode
 set hidden
 set nowrap
 set nojoinspaces
+
+" Set space as the mapleader
+nnoremap <SPACE> <Nop>
+let mapleader=" "
+
 let g:sneak#s_next = 1
 let g:vim_markdown_new_list_item_indent = 0
 let g:vim_markdown_auto_insert_bullets = 0
