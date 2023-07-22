@@ -1,5 +1,19 @@
 vim.cmd [[packadd packer.nvim]]
 
+-- ensure the packer plugin manager is installed
+local ensure_packer = function()
+  local fn = vim.fn
+  local install_path = fn.stdpath("data") .. "/site/pack/packer/start/packer.nvim"
+  if fn.empty(fn.glob(install_path)) > 0 then
+    fn.system({ "git", "clone", "--depth", "1", "https://github.com/wbthomason/packer.nvim", install_path })
+    vim.cmd([[packadd packer.nvim]])
+    return true
+  end
+  return false
+end
+
+local packer_bootstrap = ensure_packer()
+
 -- Plugin list
 require('packer').startup(function(use)
   use 'wbthomason/packer.nvim'
@@ -49,7 +63,17 @@ require('packer').startup(function(use)
   use('hrsh7th/vim-vsnip')
   -- Adds extra functionality over rust analyzer
   use("simrat39/rust-tools.nvim")
+  use {
+	  "windwp/nvim-autopairs",
+    config = function() require("nvim-autopairs").setup {} end
+  }
 end)
+
+-- the first run will install packer and our plugins
+if packer_bootstrap then
+  require("packer").sync()
+  return
+end
 
 -- Plugin setup
 require("mason").setup()
@@ -60,33 +84,18 @@ require("gruvbox").setup()
 vim.opt.shortmess = vim.opt.shortmess + "c"
 
 local function on_attach(client, buffer)
-  -- This callback is called when the LSP is atttached/enabled for this buffer
-  -- we could set keymaps related to LSP, etc here.
-  local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
-  local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
-
-  --Enable completion triggered by <c-x><c-o>
-  buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
-
-  -- Mappings.
-  local opts = { noremap=true, silent=true }
-
-  -- See `:help vim.lsp.*` for documentation on any of the below functions
-  buf_set_keymap('n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
-  buf_set_keymap('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
-  buf_set_keymap('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
-  buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
-  buf_set_keymap('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
-  buf_set_keymap('n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
-  buf_set_keymap('n', '<space>r', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
-  buf_set_keymap('n', '<space>a', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
-  buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-  buf_set_keymap('n', '<space>e', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
-  buf_set_keymap('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
-  buf_set_keymap('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
-  buf_set_keymap('n', '<space>q', '<cmd>lua vim.diagnostic.set_loclist()<CR>', opts)
-  buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
-
+  local keymap_opts = { buffer = buffer }
+  -- Code navigation and shortcuts
+  vim.keymap.set("n", "<c-]>", vim.lsp.buf.definition, keymap_opts)
+  vim.keymap.set("n", "K", vim.lsp.buf.hover, keymap_opts)
+  vim.keymap.set("n", "gD", vim.lsp.buf.implementation, keymap_opts)
+  vim.keymap.set("n", "<c-k>", vim.lsp.buf.signature_help, keymap_opts)
+  vim.keymap.set("n", "1gD", vim.lsp.buf.type_definition, keymap_opts)
+  vim.keymap.set("n", "gr", vim.lsp.buf.references, keymap_opts)
+  vim.keymap.set("n", "g0", vim.lsp.buf.document_symbol, keymap_opts)
+  vim.keymap.set("n", "gW", vim.lsp.buf.workspace_symbol, keymap_opts)
+  vim.keymap.set("n", "gd", vim.lsp.buf.definition, keymap_opts)
+  vim.keymap.set("n", "ga", vim.lsp.buf.code_action, keymap_opts)
   -- Get signatures (and _only_ signatures) when in argument lists.
   require "lsp_signature".on_attach({
     doc_lines = 0,
@@ -100,6 +109,9 @@ end
 -- rust-tools will configure and enable certain LSP features for us.
 -- See https://github.com/simrat39/rust-tools.nvim#configuration
 local opts = {
+  runnables = {
+    use_telescope = true,
+  },
   tools = {
     inlay_hints = {
       auto = true,
@@ -211,4 +223,11 @@ cmp.setup.cmdline(':', {
     { name = 'path' }
   })
 })
+
+-- If you want insert `(` after select function or method item
+local cmp_autopairs = require('nvim-autopairs.completion.cmp')
+cmp.event:on(
+  'confirm_done',
+  cmp_autopairs.on_confirm_done()
+)
 
