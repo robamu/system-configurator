@@ -27,14 +27,29 @@ require('packer').startup(function(use)
   use {
     "williamboman/mason-lspconfig.nvim",
     "neovim/nvim-lspconfig",
+    "folke/neodev.nvim"
   }
   use {
     'nvim-treesitter/nvim-treesitter',
     run = ':TSUpdate'
   }
+  use({
+    "nvim-treesitter/nvim-treesitter-textobjects",
+    after = "nvim-treesitter",
+    requires = "nvim-treesitter/nvim-treesitter",
+  })
   use {
     'nvim-telescope/telescope.nvim', tag = '0.1.2',
     requires = { {'nvim-lua/plenary.nvim'} }
+  }
+  use {
+    'nvim-telescope/telescope-fzf-native.nvim',
+    -- NOTE: If you are having trouble with this installation,
+    --       refer to the README for telescope-fzf-native for more instructions.
+    build = 'make',
+    cond = function()
+      return vim.fn.executable 'make' == 1
+    end,
   }
   use {
     'andymass/vim-matchup',
@@ -49,7 +64,9 @@ require('packer').startup(function(use)
     -- cmp LSP completion
     "hrsh7th/cmp-nvim-lsp",
     -- cmp Snippet completion
-    "hrsh7th/cmp-vsnip",
+    -- "hrsh7th/cmp-vsnip",
+    "L3MON4D3/LuaSnip",
+    "saadparwaiz1/cmp_luasnip",
     -- cmp Path completion
     "hrsh7th/cmp-path",
     "hrsh7th/cmp-buffer",
@@ -58,7 +75,7 @@ require('packer').startup(function(use)
   })
   -- See hrsh7th other plugins for more great completion sources!
   -- Snippet engine
-  use('hrsh7th/vim-vsnip')
+  -- use('hrsh7th/vim-vsnip')
   -- Adds extra functionality over rust analyzer
   use("simrat39/rust-tools.nvim")
   use {

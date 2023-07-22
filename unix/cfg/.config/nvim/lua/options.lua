@@ -69,4 +69,5 @@ vim.opt.gdefault=true
 
 -- Remove toolbar
 vim.cmd("set guioptions-=T")
+vim.opt.colorcolumn="80,100"
 

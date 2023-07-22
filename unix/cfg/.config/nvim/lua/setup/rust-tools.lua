@@ -1,7 +1,5 @@
 local function on_attach(client, buffer)
   local keymap_opts = { buffer = buffer }
-  -- Code navigation and shortcuts
-  vim.keymap.set("n", "1gD", vim.lsp.buf.type_definition, keymap_opts)
   -- Get signatures (and _only_ signatures) when in argument lists.
   require "lsp_signature".on_attach({
     doc_lines = 0,
