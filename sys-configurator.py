@@ -6,7 +6,6 @@ Python utility to set up common and useful aliases
 import os
 import sys
 import getpass
-import fileinput
 from os import linesep
 from shutil import which
 
