@@ -78,4 +78,5 @@ require("setup/mason")
 require("setup/gruvbox")
 require("setup/rust-tools")
 require("setup/nvim-cmp")
+require("setup/pyright-lsp")
 
