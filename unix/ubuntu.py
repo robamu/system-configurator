@@ -80,36 +80,28 @@ def main():
     if prompt_yes_no("branch display in terminal", PromptType.ACTIVATE):
         os.system("sudo cp scripts/term-git-branch /etc")
         append_show_git_branch_setting()
-    if prompt_yes_no("Docker"):
-        install_docker()
+    if prompt_yes_no("ripgrep (rg)")
+        install_ripgrep()
+    if prompt_yes_no("find (fd)")
+        install_find()
+    if prompt_yes_no("exa")
+        install_exa()
     #if prompt_yes_no("generate ssh key", PromptType.INTENT):
     #    generate_ssh_key()
     if prompt_yes_no("generate gpg key", PromptType.INTENT):
         generate_gpg_key()
 
 
-def install_docker():
-    # Add dependencies
-    os.system(
-        "sudo apt-get install apt-transport-https lsb-release ca-certificates gnupg curl"
-    )
-    # Add GPG key
-    os.system(
-        "curl -fsSL https://download.docker.com/linux/ubuntu/gpg | "
-        "sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg"
-    )
-    # Add package source
-    os.system(
-        "echo \"deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] "
-        "https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable\" | "
-        "sudo tee /etc/apt/sources.list.d/docker.list > /dev/null"
-    )
-    # Install docker engine
-    os.system("sudo apt-get update")
-    os.system("sudo apt-get install docker-ce docker-ce-cli containerd.io")
-    if prompt_yes_no("add user to the docker group", PromptType.INTENT):
-        os.system("sudo groupadd docker")
-        os.system("sudo usermod -aG docker $USER")
+def install_ripgrep():
+    pass
+
+
+def install_exa():
+    pass
+
+
+def install_find():
+    pass
 
 
 def generate_gpg_key():
