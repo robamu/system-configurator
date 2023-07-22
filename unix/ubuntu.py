@@ -2,6 +2,7 @@
 import os
 import enum
 import webbrowser
+from shutil import which
 
 
 MINIMIZE_TO_DOCK_CMD = "gsettings set org.gnome.shell.extensions.dash-to-dock click-action 'minimize'"
@@ -80,6 +81,8 @@ def main():
     if prompt_yes_no("branch display in terminal", PromptType.ACTIVATE):
         os.system("sudo cp scripts/term-git-branch /etc")
         append_show_git_branch_setting()
+    if prompt_yes_no("Rust")
+        install_rust()
     if prompt_yes_no("ripgrep (rg)")
         install_ripgrep()
     if prompt_yes_no("find (fd)")
@@ -92,16 +95,29 @@ def main():
         generate_gpg_key()
 
 
+def install_rust():
+    os.system("curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh")
+
+
 def install_ripgrep():
-    pass
+    if which("cargo"):
+        os.system("cargo install ripgrep")
+    else:
+        os.system("sudo apt-get install ripgrep")
 
 
 def install_exa():
-    pass
+    if which("cargo"):
+        os.system("cargo install exa")
+    else:
+        os.system("sudo apt-get install exa")
 
 
 def install_find():
-    pass
+    if which("cargo"):
+        os.system("cargo install fd-find")
+    else:
+        os.system("sudo apt-get install fd-find")
 
 
 def generate_gpg_key():
