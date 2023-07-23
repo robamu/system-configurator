@@ -22,40 +22,40 @@ TEST_FILENAME = "test_aliases.txt"
 ALIASES_FILENAME = ".bash_aliases"
 
 
-GENERIC_ALIASES = \
-    f"alias gits='git status'\n" \
-    f"alias gita='git add'\n" \
-    f"alias gitaa='git add .'\n" \
-    f"alias gitc='git commit'\n" \
-    f"alias gitd='git diff'\n" \
-    f"alias gitds='git diff --staged'\n" \
-    f"alias gitm='git merge'\n" \
-    f"alias gitp='git pull'\n" \
-    f"alias gitl='git log'\n" \
-    f"alias gitu='git push'\n" \
-    f"alias gitrmu='git remote update --prune'\n\n" \
-    f"alias ..='cd ..'\n" \
-    f"alias ...='cd ../..'\n" \
+GENERIC_ALIASES = (
+    f"alias gits='git status'\n"
+    f"alias gita='git add'\n"
+    f"alias gitaa='git add .'\n"
+    f"alias gitc='git commit'\n"
+    f"alias gitd='git diff'\n"
+    f"alias gitds='git diff --staged'\n"
+    f"alias gitm='git merge'\n"
+    f"alias gitp='git pull'\n"
+    f"alias gitl='git log'\n"
+    f"alias gitu='git push'\n"
+    f"alias gitrmu='git remote update --prune'\n\n"
+    f"alias ..='cd ..'\n"
+    f"alias ...='cd ../..'\n"
     f"alias ....='cd ../../..'\n"
+)
 SOURCE_ALIAS = f"alias salias='cd ~ && source {ALIASES_FILENAME}'\n"
 SOURCE_ALIAS_GIT_WIN = f"alias salias='cd ~ && source .bashrc'\n"
 SHORTCUT_ALIAS_INCOMP = f"alias shortcut='cd ~ && "
 
-GIT_CRED_CACHE_CMD = f"git config --global " \
-                     f"credential.helper 'cache --timeout={GIT_CRED_CACHE_TIMEOUT}'"
-EDITOR_SELECTION = {
-    0: "gedit",
-    1: "vim",
-    2: "nano",
-    3: "custom"
-}
+GIT_CRED_CACHE_CMD = (
+    f"git config --global "
+    f"credential.helper 'cache --timeout={GIT_CRED_CACHE_TIMEOUT}'"
+)
+EDITOR_SELECTION = {0: "gedit", 1: "vim", 2: "nano", 3: "custom", 4: "nvim"}
 
-UNIX_APT_UPDATE_ALIAS = f"alias updatesys=\"sudo apt-get update && sudo apt-get upgrade\"\n"
-UNIX_PAC_UPDATE_ALIAS = f"alias updatesys=\"sudo pacman -Syu\"\n"
+UNIX_APT_UPDATE_ALIAS = (
+    f'alias updatesys="sudo apt-get update && sudo apt-get upgrade"\n'
+)
+UNIX_PAC_UPDATE_ALIAS = f'alias updatesys="sudo pacman -Syu"\n'
 
 WIN_MSYS2_CMD = "msys2_shell.cmd"
 WIN_MINGW64_ARGS = "-mingw64 -c"
-WIN_MINGW64_UPDATE_ALIAS = f"alias updatesys=\"pacman -Syu\"\n"
+WIN_MINGW64_UPDATE_ALIAS = f'alias updatesys="pacman -Syu"\n'
 WIN_MINGW64_CMD = f"{WIN_MSYS2_CMD} {WIN_MINGW64_ARGS}"
 
 
@@ -74,9 +74,10 @@ def main():
 
 def generate_windows_aliases():
     aliases_string_buf = GENERIC_ALIASES
-    notepad_alias = "alias notepad=\"/c/Program\ Files\ \(x86\)/Notepad++/notepad++.exe\"\n"
+    notepad_alias = (
+        'alias notepad="/c/Program\ Files\ \(x86\)/Notepad++/notepad++.exe"\n'
+    )
     aliases_string_buf += "\n" + notepad_alias
-
 
     which_result = which("git")
     if which_result is not None:
@@ -85,14 +86,16 @@ def generate_windows_aliases():
         shortcut_alias = SHORTCUT_ALIAS_INCOMP + f"notepad .bashrc'\n"
         aliases_string_buf += shortcut_alias
         aliases_string_buf += SOURCE_ALIAS_GIT_WIN
-        os.chdir(os.getenv('userprofile'))
+        os.chdir(os.getenv("userprofile"))
         if os.path.isfile(".bashrc") and not DISCARD_APPEND_MODE:
             print(f".bashrc file already exists")
             sys.exit(0)
         target_file = file_writer(".bashrc", aliases_string_buf)
         print(f"Generated {target_file} in {os.getcwd()} for git")
         if GIT_CACHE_CREDENTIALS:
-            print(f"Configuring git to store credentials for {GIT_CRED_CACHE_TIMEOUT} seconds")
+            print(
+                f"Configuring git to store credentials for {GIT_CRED_CACHE_TIMEOUT} seconds"
+            )
             os.system(GIT_CRED_CACHE_CMD)
     else:
         print("git not found, might not be installed, not creating alias file..")
@@ -113,7 +116,7 @@ def generate_windows_aliases():
 
 def generate_unix_aliases():
     print("Generting Unix aliases..")
-    os.chdir(os.getenv("HOME"))
+    os.chdir("~")
     current_file_string_bug = ""
     if os.path.isfile(".bash_aliases"):
         print(f"{ALIASES_FILENAME} file already exists")
@@ -145,19 +148,24 @@ def generate_unix_aliases():
     if which_result is not None:
         aliases_string_buf += UNIX_APT_UPDATE_ALIAS
     if os.path.isdir("/mnt/c/"):
-        notepad_alias = "alias notepad=\"/mnt/c/Program\ Files\ \(x86\)/Notepad++/notepad++.exe\"\n"
-        confirm = input("Detected Linux platform might be WSL. Generate notepad++ alias? [y/n]: ")
+        notepad_alias = (
+            'alias notepad="/mnt/c/Program\ Files\ \(x86\)/Notepad++/notepad++.exe"\n'
+        )
+        confirm = input(
+            "Detected Linux platform might be WSL. Generate notepad++ alias? [y/n]: "
+        )
         if confirm in ["y", "yes", "1"]:
             aliases_string_buf += notepad_alias
     target_file = file_writer(ALIASES_FILENAME, aliases_string_buf)
     print(f"Generated {target_file} in {os.getcwd()}")
     print(f"Sourcing {target_file}..")
-    if(os.path.isfile(".bash_aliases")):
-        os.system("/bin/bash -c \"source .bash_aliases\"")
+    if os.path.isfile(".bash_aliases"):
+        os.system('/bin/bash -c "source .bash_aliases"')
     if GIT_CACHE_CREDENTIALS:
-        print(f"Configuring git to store credentials for {GIT_CRED_CACHE_TIMEOUT} seconds")
+        print(
+            f"Configuring git to store credentials for {GIT_CRED_CACHE_TIMEOUT} seconds"
+        )
         os.system(GIT_CRED_CACHE_CMD)
-        
 
 
 def prompt_unix_editor() -> str:
@@ -195,7 +203,7 @@ def replace_in_file(file_path: str, pattern: str, replacement: str):
         file_data = read_file.readlines()
     new_file = ""
     for line in file_data:
-        line.replace("\r","")
+        line.replace("\r", "")
         new_file += line
     with open(file_path, "w") as write_file:
         write_file.write(new_file)

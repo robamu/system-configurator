@@ -42,6 +42,26 @@ Install git first to clone the script
 sudo apt-get install git
 ```
 
+List of reconfigured settings:
+
+1. Minimize to dock enabled
+
+List of installed tools and applications:
+
+1. `neovim`
+2. Spotify
+3. Discord
+4. PyCharm Professional
+5. VS Code
+6. `cmake`
+7. `ninja`
+8. KeyPassXC
+9. Sublime Text
+10. Rust
+11. ripgrep
+12. find (fd)
+13. exa
+
 # Generating and signing commits with GPG
 
 Follow [this guide](https://git-scm.com/book/en/v2/Git-Tools-Signing-Your-Work).
