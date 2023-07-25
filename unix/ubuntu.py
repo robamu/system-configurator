@@ -47,6 +47,8 @@ class PromptType(enum.Enum):
 def main():
     if prompt_yes_no("vim-gtk3"):
         os.system("sudo apt-get install vim-gtk3")
+    if prompt_yes_no("xclip"):
+        os.system("sudo apt-get install xclip")
     if prompt_yes_no("Minimize to Dock", PromptType.ACTIVATE):
         os.system(MINIMIZE_TO_DOCK_CMD)
     if prompt_yes_no("neovim"):
