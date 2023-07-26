@@ -17,3 +17,8 @@ alias gitm='git merge'
 alias gitpl='git pull'
 alias gitpu='git push'
 alias gitrmu='git remote update --prune'
+
+alias ls='exa'
+alias ll='exa -l --git'
+alias lt='exa -T'
+

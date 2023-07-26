@@ -48,19 +48,20 @@ List of reconfigured settings:
 
 List of installed tools and applications:
 
-1. `neovim`
-2. Spotify
-3. Discord
-4. PyCharm Professional
-5. VS Code
-6. `cmake`
-7. `ninja`
-8. KeyPassXC
-9. Sublime Text
-10. Rust
-11. ripgrep
-12. find (fd)
-13. exa
+- `neovim`
+- `xclip`
+- Spotify
+- Discord
+- PyCharm Professional
+- VS Code
+- `cmake`
+- `ninja`
+- KeyPassXC
+- Sublime Text
+- Rust
+- ripgrep
+- find (fd)
+- exa
 
 # Generating and signing commits with GPG
 
