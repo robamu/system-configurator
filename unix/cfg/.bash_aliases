@@ -22,3 +22,5 @@ alias ls='exa'
 alias ll='exa -l --git'
 alias lt='exa -T'
 
+alias cat='bat'
+
