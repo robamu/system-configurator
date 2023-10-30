@@ -14,7 +14,7 @@ alias gitc='git commit'
 alias gitd='git diff'
 alias gitds='git diff --staged'
 alias gitm='git merge'
-alias gitpl='git pull'
+alias gitp='git pull'
 alias gitpu='git push'
 alias gitrmu='git remote update --prune'
 
