@@ -45,27 +45,32 @@ class PromptType(enum.Enum):
 
 
 def main():
-    if prompt_yes_no("vim-gtk3"):
-        os.system("sudo apt-get install vim-gtk3")
     if prompt_yes_no("xclip"):
         os.system("sudo apt-get install xclip")
     if prompt_yes_no("Minimize to Dock", PromptType.ACTIVATE):
         os.system(MINIMIZE_TO_DOCK_CMD)
     if prompt_yes_no("neovim"):
         install_neovim()
+    if prompt_yes_no("zsh"):
+        install_zsh()
+    if prompt_yes_no("ripgrep (rg)"):
+        install_ripgrep()
+    if prompt_yes_no("find (fd)"):
+        install_find()
+    if prompt_yes_no("exa"):
+        install_exa()
+    if prompt_yes_no("bat"):
+        install_bat()
+    if prompt_yes_no("Rust"):
+        install_rust()
     if prompt_yes_no("Spotify"):
         os.system("sudo snap install spotify")
     if prompt_yes_no("Discord"):
         os.system("sudo snap install discord")
-    if prompt_yes_no("PyCharm Professional"):
-        os.system("sudo snap install pycharm-professional --classic")
     if prompt_yes_no("Visual Studio Code"):
         os.system("sudo snap install --classic code")
     if prompt_yes_no("Python for VS Code"):
         os.system("code --install-extension ms-python.python")
-    if prompt_yes_no("Eclipse"):
-        print("Please use installer..")
-        webbrowser.open("https://www.eclipse.org/downloads/packages/installer")
     if prompt_yes_no("add user to the dialout group", PromptType.INTENT):
         os.system("sudo adduser $USER dialout")
     if prompt_yes_no("ubuntu-restricted-extras and ubuntu-restricted-addons"):
@@ -95,16 +100,6 @@ def main():
     if prompt_yes_no("branch display in terminal", PromptType.ACTIVATE):
         os.system("sudo cp scripts/term-git-branch /etc")
         append_show_git_branch_setting()
-    if prompt_yes_no("Rust"):
-        install_rust()
-    if prompt_yes_no("ripgrep (rg)"):
-        install_ripgrep()
-    if prompt_yes_no("find (fd)"):
-        install_find()
-    if prompt_yes_no("exa"):
-        install_exa()
-    if prompt_yes_no("bat"):
-        install_bat()
     # if prompt_yes_no("generate ssh key", PromptType.INTENT):
     #    generate_ssh_key()
     if prompt_yes_no("generate gpg key", PromptType.INTENT):
@@ -159,7 +154,7 @@ def install_neovim():
 def generate_gpg_key():
     print("Existing GPG keys: ")
     os.system("gpg --list-keys")
-    confirm = input(f"Do you want to generate a new gpg key? [y/n]: ")
+    confirm = input("Do you want to generate a new gpg key? [y/n]: ")
     if confirm not in ["yes", "y", "1"]:
         return
     os.system("gpg --gen-key")
@@ -207,6 +202,10 @@ def generate_ssh_key():
             break
     os.system(f"ssh-keygen -t ed25519 {mail}")
     print("SSH key generated, but still needs to be added with ssh-add")
+
+
+def install_zsh():
+    os.system("sudo apt-get install zsh")
 
 
 if __name__ == "__main__":
