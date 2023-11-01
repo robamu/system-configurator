@@ -103,6 +103,8 @@ def main():
         install_find()
     if prompt_yes_no("exa"):
         install_exa()
+    if prompt_yes_no("bat"):
+        install_bat()
     # if prompt_yes_no("generate ssh key", PromptType.INTENT):
     #    generate_ssh_key()
     if prompt_yes_no("generate gpg key", PromptType.INTENT):
@@ -132,6 +134,13 @@ def install_find():
         os.system("cargo install fd-find")
     else:
         os.system("sudo apt-get install fd-find")
+
+
+def install_bat():
+    if which("cargo"):
+        os.system("cargo install bat")
+    else:
+        os.system("sudo apt-get install bat")
 
 
 def install_neovim():

@@ -19,5 +19,5 @@ alias ll='exa -l --git'
 alias lt='exa -T'
 
 alias lg='lazygit'
-alias cat='bat'
 alias tn='tmux new'
+alias cat='bat'
