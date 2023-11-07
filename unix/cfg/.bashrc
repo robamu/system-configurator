@@ -124,7 +124,9 @@ fi
 if [ ! -z "${CONSOLE_PREFIX}" ]; then
     PS1="${CONSOLE_PREFIX} $PS1"
 fi
-
 if [ -f ~/.aliases ]; then
   . ~/.aliases
 fi
+
+eval "$(zoxide init bash)"
+export PATH=$PATH:"$HOME/scripts"
