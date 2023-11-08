@@ -1,4 +1,4 @@
-# Command Line Configurator Utility
+# System Configurator Utility
 
 This is a personal README which includes steps and utilities to set up a convenient development
 environment on Windows and Linux. It includes a Python script to set up the command line and
@@ -90,3 +90,7 @@ by running following command
 ```sh
 timedatectl set-local-rtc 1 --adjust-system-clock
 ```
+
+# Neovim Configuration
+
+[Neovim configuration Repo](https://github.com/robamu/nvim-cfg)
