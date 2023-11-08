@@ -100,6 +100,8 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
+export PATH=$PATH:~/scripts
 source ~/.aliases
 
 eval "$(starship init zsh)"
+eval "$(zoxide init zsh)"
