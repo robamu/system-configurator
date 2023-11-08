@@ -129,4 +129,5 @@ if [ -f ~/.aliases ]; then
 fi
 
 eval "$(zoxide init bash)"
+eval "$(starship init bash)"
 export PATH=$PATH:"$HOME/scripts"
