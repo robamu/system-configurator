@@ -101,7 +101,7 @@ source $ZSH/oh-my-zsh.sh
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
 export PATH=$PATH:~/scripts
-source ~/.aliases
+source $HOME/.aliases
 
 eval "$(starship init zsh)"
 eval "$(zoxide init zsh)"

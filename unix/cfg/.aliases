@@ -1,23 +1,25 @@
 alias gits='git status'
 alias gita='git add'
 alias gitaa='git add .'
-alias gitc='git commit'
+alias gitc='git commit -S'
+alias gitco='git checkout'
 alias gitd='git diff'
 alias gitds='git diff --staged'
 alias gitm='git merge'
-alias gitpl='git pull'
+alias gitf='git fetch'
+alias gitl='git log'
 alias gitp='git push'
 alias gitrmu='git remote update --prune'
 
 alias shortcut='nvim ~/.aliases'
 alias salias='source ~/.aliases'
-alias updatesys='sudo apt-get update && sudo apt-get upgrade'
-alias udev-reload='sudo udevadm control --reload-rules && sudo udevadm trigger'
+alias updatesys="sudo apt-get update && sudo apt-get upgrade"
+alias reload-udev="sudo udevadm control --reload-rules && sudo udevadm trigger"
 
 alias ls='exa'
 alias ll='exa -l --git'
 alias lt='exa -T'
-
 alias lg='lazygit'
-alias tn='tmux new'
 alias cat='bat'
+alias tn='tmux new'
+alias ta='tmux a'
