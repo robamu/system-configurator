@@ -1,6 +1,3 @@
-function go-sw { Set-Location "$HOME\Documents\Software"}
-function go-source { Set-Location "$HOME\Documents\SOURCE" }
-
 function Git-Status { git status }
 Set-Alias -Name gits -Value Git-Status
 function Git-Commit { git commit }
@@ -14,4 +11,10 @@ Set-Alias -Name gitd -Value Git-Diff
 function Git-DiffStaged { git diff --staged }
 Set-Alias -Name gitds -Value Git-DiffStaged
 
-Import-Module posh-git
+function Shortcut-Func { nvim "$PROFILE" }
+Set-Alias -Name shortcut -Value Shortcut-Func
+function Salias-Func { & $PROFILE }
+Set-Alias -Name salias -Value Salias-Func 
+
+# oh-my-posh init pwsh | Invoke-Expression
+Invoke-Expression (&starship init powershell)
