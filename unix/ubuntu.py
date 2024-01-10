@@ -49,8 +49,6 @@ def main():
         os.system("sudo apt-get install xclip")
     if prompt_yes_no("Minimize to Dock", PromptType.ACTIVATE):
         os.system(MINIMIZE_TO_DOCK_CMD)
-    if prompt_yes_no("neovim"):
-        install_neovim()
     if prompt_yes_no("zsh"):
         install_zsh()
     if prompt_yes_no("ripgrep (rg)"):
@@ -83,6 +81,8 @@ def main():
         os.system("sudo apt-get install cmake")
     if prompt_yes_no("ninja"):
         os.system("sudo apt-get install ninja-build")
+    if prompt_yes_no("neovim"):
+        install_neovim()
     if prompt_yes_no("KeyPassXC"):
         os.system("sudo snap install keepassxc")
     if prompt_yes_no("Sublime Text"):
