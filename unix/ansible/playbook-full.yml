@@ -1,4 +1,4 @@
-- name: Full Ssystem Setup
+- name: Full System Setup
   hosts: localhost
   become: true
   become_user: "{{ lookup('env', 'USER') }}"

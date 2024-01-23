@@ -1,0 +1,5 @@
+- name: Install luxury packages with snap
+  community.general.snap:
+    name:
+      - spotify
+      - discord
