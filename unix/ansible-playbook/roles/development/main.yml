@@ -1,4 +1,0 @@
-- name: Hello ansible
-  shell: |
-    echo "Hello ansible"
-    echo "Hello ansible" >> /tmp/log
