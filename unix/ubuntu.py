@@ -49,16 +49,14 @@ def main():
         os.system("sudo apt-get install xclip")
     if prompt_yes_no("Minimize to Dock", PromptType.ACTIVATE):
         os.system(MINIMIZE_TO_DOCK_CMD)
-    if prompt_yes_no("neovim"):
-        install_neovim()
     if prompt_yes_no("zsh"):
         install_zsh()
     if prompt_yes_no("ripgrep (rg)"):
         install_ripgrep()
     if prompt_yes_no("find (fd)"):
         install_find()
-    if prompt_yes_no("exa"):
-        install_exa()
+    if prompt_yes_no("eza"):
+        install_eza()
     if prompt_yes_no("bat"):
         install_bat()
     if prompt_yes_no("Rust"):
@@ -83,6 +81,10 @@ def main():
         os.system("sudo apt-get install cmake")
     if prompt_yes_no("ninja"):
         os.system("sudo apt-get install ninja-build")
+    if prompt_yes_no("make"):
+        os.system("sudo apt-get install make")
+    if prompt_yes_no("neovim"):
+        install_neovim()
     if prompt_yes_no("KeyPassXC"):
         os.system("sudo snap install keepassxc")
     if prompt_yes_no("Sublime Text"):
@@ -112,28 +114,28 @@ def install_rust():
 
 def install_ripgrep():
     if which("cargo"):
-        os.system("cargo install ripgrep")
+        os.system("cargo install ripgrep --locked")
     else:
         os.system("sudo apt-get install ripgrep")
 
 
-def install_exa():
+def install_eza():
     if which("cargo"):
-        os.system("cargo install exa")
+        os.system("cargo install eza --locked")
     else:
-        os.system("sudo apt-get install exa")
+        os.system("sudo apt-get install eza")
 
 
 def install_find():
     if which("cargo"):
-        os.system("cargo install fd-find")
+        os.system("cargo install fd-find --locked")
     else:
         os.system("sudo apt-get install fd-find")
 
 
 def install_bat():
     if which("cargo"):
-        os.system("cargo install bat")
+        os.system("cargo install bat --locked")
     else:
         os.system("sudo apt-get install bat")
 

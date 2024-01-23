@@ -16,9 +16,9 @@ alias salias='source ~/.aliases'
 alias updatesys="sudo apt-get update && sudo apt-get upgrade"
 alias reload-udev="sudo udevadm control --reload-rules && sudo udevadm trigger"
 
-alias ls='exa'
-alias ll='exa -l --git'
-alias lt='exa -T'
+alias ls='eza'
+alias ll='eza -l --git'
+alias lt='eza -T'
 alias lg='lazygit'
 alias cat='bat'
 alias tn='tmux new'
