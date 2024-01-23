@@ -24,6 +24,18 @@
           - python3-pip
         state: present
 
+    - name: Install generic packages with snap
+      community.general.snap:
+        name:
+          - keepassxc
+
+    - name: Install pre-built neovim
+      become_user: root
+      shell: |
+        curl -SLJO https://github.com/neovim/neovim/releases/download/v0.9.5/nvim.appimage
+        chmod u+x nvim.appimage
+        mv nvim.appimage /usr/local/bin/nvim
+
     - name: check if cargo is installed
       shell: command -v cargo
       register: cargo_exists
@@ -42,3 +54,23 @@
       shell: /tmp/sh.rustup.rs -y
       tags:
         - rust
+
+    - name: Install "ripgrep" Rust package with locked dependencies
+      community.general.cargo:
+        name: ripgrep
+        locked: true
+
+    - name: Install "find (fd)" Rust package with locked dependencies
+      community.general.cargo:
+        name: fd-find
+        locked: true
+
+    - name: Install "eza" Rust package with locked dependencies
+      community.general.cargo:
+        name: eza
+        locked: true
+
+    - name: Install "bat" Rust package with locked dependencies
+      community.general.cargo:
+        name: bat
+        locked: true
