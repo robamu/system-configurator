@@ -29,12 +29,23 @@
         name:
           - keepassxc
 
-    - name: Install pre-built neovim
+    - name: Check if nvim is already installed
+      shell: command -v nvim
+      register: nvim_installed
+      ignore_errors: yes
+    - name: Download neovim.appimage
+      ansible.builtin.get_url:
+        url: https://github.com/neovim/neovim/releases/download/v0.9.5/nvim.appimage
+        dest: /tmp/nvim.appimage
+        mode: '0755'
+      when: nvim_installed is failed
+    - name: Ensure neovim.appimage is executable
+      shell: chmod u+x /tmp/nvim.appimage
+      when: nvim_installed is failed
+    - name: Move neovim.appimage to /usr/local/bin/nvim
       become_user: root
-      shell: |
-        curl -SLJO https://github.com/neovim/neovim/releases/download/v0.9.5/nvim.appimage
-        chmod u+x nvim.appimage
-        mv nvim.appimage /usr/local/bin/nvim
+      shell: mv /tmp/nvim.appimage /usr/local/bin/nvim
+      when: nvim_installed is failed
 
     - name: check if cargo is installed
       shell: command -v cargo
@@ -74,3 +85,11 @@
       community.general.cargo:
         name: bat
         locked: true
+
+    - name: Copy .zshrc
+      ansible.builtin.copy:
+        src: files/.zshrc
+        dest: /home/{{ ansible_user_id }}/.zshrc
+        owner: "{{ ansible_user_id }}"
+        group: "{{ ansible_user_id }}"
+        mode: '0644'
