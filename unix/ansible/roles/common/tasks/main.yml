@@ -79,10 +79,14 @@
     name: bat
     locked: true
 
-- name: Copy .zshrc
+- name: Copy configuration files
   ansible.builtin.copy:
-    src: files/.zshrc
-    dest: /home/{{ ansible_user_id }}/.zshrc
+    src: "{{ role_path }}/files/{{ item.src }}"
+    dest: "/home/{{ ansible_user_id }}/{{ item.dest }}"
     owner: "{{ ansible_user_id }}"
     group: "{{ ansible_user_id }}"
     mode: '0644'
+  loop:
+    - { src: '.zshrc', dest: '.zshrc' }
+    - { src: '.bashrc', dest: '.bashrc' }
+    - { src: '.tmux.conf', dest: '.tmux.conf' }
