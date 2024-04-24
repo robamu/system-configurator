@@ -11,6 +11,7 @@
   ansible.builtin.apt:
     name:
       - zsh
+      - tmux
       - xclip
       - cmake
       - make
@@ -23,6 +24,14 @@
   community.general.snap:
     name:
       - keepassxc
+
+- name: Install oh-my-zsh
+  ansible.builtin.shell:
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+
+- name: Install starship
+  ansible.builtin.shell:
+    curl -sS https://starship.rs/install.sh | sh
 
 - name: Check if nvim is already installed
   shell: command -v nvim
