@@ -1,6 +1,7 @@
 - name: Update apt package cache
   ansible.builtin.apt:
     update_cache: yes
+    force_apt_get: yes
   become_user: root
 
 - name: Activate minimize to dock
@@ -16,6 +17,7 @@
       - ninja-build
       - python3-pip
     state: present
+  become_user: root
 
 - name: Install generic packages with snap
   community.general.snap:

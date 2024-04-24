@@ -30,34 +30,20 @@ development environment in a new Unix environment or for MinGW and git on Window
 
 # Ubuntu
 
-Python script to install various useful programs can be found in `Ubuntu` folder.
-Install git first to clone the script
+It is recommended to use the provided ansible notebook.
+Install `ansible` first:
 
 ```sh
-sudo apt-get install git
+python3 -m pip install ansible
 ```
 
-List of reconfigured settings:
+Two playbooks are provided: `playbook-full` and `playbook-min`.
 
-1. Minimize to dock enabled
+Run minimal playbook:
 
-List of installed tools and applications:
-
-- `neovim`
-- `xclip`
-- `zsh`
-- Spotify
-- Discord
-- PyCharm Professional
-- VS Code
-- `cmake`
-- `ninja`
-- KeyPassXC
-- Sublime Text
-- Rust
-- ripgrep
-- find (fd)
-- exa
+```sh
+ansible-playbook -i inventory.ini playbook-min.yml -K
+```
 
 # Generating and signing commits with GPG
 
