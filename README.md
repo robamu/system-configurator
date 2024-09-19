@@ -42,6 +42,7 @@ Two playbooks are provided: `playbook-full` and `playbook-min`.
 Run minimal playbook:
 
 ```sh
+cd unix/ansible
 ansible-playbook -i inventory.ini playbook-min.yml -K
 ```
 
