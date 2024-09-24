@@ -20,6 +20,14 @@
     state: present
   become_user: root
 
+- name: Install pipx package
+  ansible.builtin.pip:
+    name: pipx
+
+- name: Install black
+  community.general.pipx:
+    name: black
+
 - name: Install generic packages with snap
   community.general.snap:
     name:
@@ -39,7 +47,7 @@
   ignore_errors: yes
 - name: Download neovim.appimage
   ansible.builtin.get_url:
-    url: https://github.com/neovim/neovim/releases/download/v0.9.5/nvim.appimage
+    url: https://github.com/neovim/neovim/releases/download/v0.10.1/nvim.appimage
     dest: /tmp/nvim.appimage
     mode: '0755'
   when: nvim_installed is failed
