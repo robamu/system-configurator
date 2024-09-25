@@ -17,12 +17,9 @@
       - make
       - ninja-build
       - python3-pip
+      - pipx
     state: present
   become_user: root
-
-- name: Install pipx package
-  ansible.builtin.pip:
-    name: pipx
 
 - name: Install black
   community.general.pipx:
@@ -40,6 +37,11 @@
 - name: Install starship
   ansible.builtin.shell:
     curl -sS https://starship.rs/install.sh | sh
+
+- name: Clone TMUX package manager
+  ansible.builtin.git:
+    repo: 'https://github.com/tmux-plugins/tpm'
+    dest: ~/.tmux/plugins/tpm
 
 - name: Check if nvim is already installed
   shell: command -v nvim
