@@ -25,18 +25,32 @@
   community.general.pipx:
     name: black
 
-- name: Install generic packages with snap
-  community.general.snap:
-    name:
-      - keepassxc
+# Should be done early, because some later steps rely on some PATH variables
+# set here.
+- name: Copy configuration files
+  ansible.builtin.copy:
+    src: "{{ role_path }}/files/{{ item.src }}"
+    dest: "/home/{{ ansible_user_id }}/{{ item.dest }}"
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_id }}"
+    mode: '0644'
+  loop:
+    - { src: '.zshrc', dest: '.zshrc' }
+    - { src: '.bashrc', dest: '.bashrc' }
+    - { src: '.tmux.conf', dest: '.tmux.conf' }
 
+- name: Check if Oh My Zsh is installed
+  ansible.builtin.stat:
+    path: ~/.oh-my-zsh
+  register: oh_my_zsh_stat
 - name: Install oh-my-zsh
   ansible.builtin.shell:
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+  when: not oh_my_zsh_stat.stat.exists
 
 - name: Install starship
   ansible.builtin.shell:
-    curl -sS https://starship.rs/install.sh | sh
+    curl -sS https://starship.rs/install.sh --yes | sh
 
 - name: Clone TMUX package manager
   ansible.builtin.git:
@@ -99,15 +113,3 @@
   community.general.cargo:
     name: bat
     locked: true
-
-- name: Copy configuration files
-  ansible.builtin.copy:
-    src: "{{ role_path }}/files/{{ item.src }}"
-    dest: "/home/{{ ansible_user_id }}/{{ item.dest }}"
-    owner: "{{ ansible_user_id }}"
-    group: "{{ ansible_user_id }}"
-    mode: '0644'
-  loop:
-    - { src: '.zshrc', dest: '.zshrc' }
-    - { src: '.bashrc', dest: '.bashrc' }
-    - { src: '.tmux.conf', dest: '.tmux.conf' }

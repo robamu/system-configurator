@@ -31,11 +31,7 @@ development environment in a new Unix environment or for MinGW and git on Window
 # Ubuntu
 
 It is recommended to use the provided ansible notebook.
-Install `ansible` first:
-
-```sh
-python3 -m pip install ansible
-```
+[Install `ansible` first](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html#).
 
 Two playbooks are provided: `playbook-full` and `playbook-min`.
 
