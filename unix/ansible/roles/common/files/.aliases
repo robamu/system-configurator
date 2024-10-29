@@ -12,6 +12,7 @@ alias gitp='git push'
 alias gitrmu='git remote update --prune'
 
 alias shortcut='nvim ~/.aliases'
+alias avenv='source venv/bin/activate'
 alias salias='source ~/.aliases'
 alias updatesys="sudo apt-get update && sudo apt-get upgrade"
 alias reload-udev="sudo udevadm control --reload-rules && sudo udevadm trigger"

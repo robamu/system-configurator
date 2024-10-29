@@ -37,6 +37,7 @@
   loop:
     - { src: '.zshrc', dest: '.zshrc' }
     - { src: '.bashrc', dest: '.bashrc' }
+    - { src: '.aliases', dest: '.aliases' }
     - { src: '.tmux.conf', dest: '.tmux.conf' }
 
 - name: Check if Oh My Zsh is installed
