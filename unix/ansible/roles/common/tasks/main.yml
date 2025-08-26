@@ -164,3 +164,53 @@
   community.general.cargo:
     name: bat
     locked: true
+
+# Install fonts and icons
+- name: Ensure font directory exists
+  become: true
+  ansible.builtin.file:
+    path: "{{ font_dir }}"
+    state: directory
+    mode: "0755"
+
+- name: Check if this font/version is already installed
+  ansible.builtin.stat:
+    path: "{{ font_sentinel }}"
+  register: font_installed
+
+- name: Download Nerd Font zip
+  when: not font_installed.stat.exists
+  ansible.builtin.get_url:
+    url: "{{ font_zip_url }}"
+    dest: "{{ font_zip_path }}"
+    mode: "0644"
+    force: false
+
+- name: Unarchive zip into font directory
+  when: not font_installed.stat.exists
+  become: true
+  ansible.builtin.unarchive:
+    src: "{{ font_zip_path }}"
+    dest: "{{ font_dir }}"
+    remote_src: true
+    # keep_newer: true   # optional
+
+- name: Remove downloaded zip
+  when: not font_installed.stat.exists
+  become: true
+  ansible.builtin.file:
+    path: "{{ font_zip_path }}"
+    state: absent
+
+- name: Mark this font/version as installed (sentinel)
+  when: not font_installed.stat.exists
+  become: true
+  ansible.builtin.file:
+    path: "{{ font_sentinel }}"
+    state: touch
+    mode: "0644"
+
+- name: Refresh font cache
+  when: not font_installed.stat.exists
+  become: true
+  ansible.builtin.command: fc-cache -fv
