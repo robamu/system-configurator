@@ -18,6 +18,7 @@
       - ninja-build
       - python3-pip
       - pipx
+      - libfuse2
     state: present
   become_user: root
 
@@ -40,14 +41,37 @@
     - { src: '.aliases', dest: '.aliases' }
     - { src: '.tmux.conf', dest: '.tmux.conf' }
 
+# ---- Oh My Zsh ----
 - name: Check if Oh My Zsh is installed
   ansible.builtin.stat:
-    path: ~/.oh-my-zsh
-  register: oh_my_zsh_stat
-- name: Install oh-my-zsh
-  ansible.builtin.shell:
-    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-  when: not oh_my_zsh_stat.stat.exists
+    path: "{{ omz_dir }}"
+  register: omz
+
+- name: Install Oh My Zsh (git clone)
+  ansible.builtin.git:
+    repo: https://github.com/ohmyzsh/ohmyzsh.git
+    dest: "{{ omz_dir }}"
+    version: master
+    update: no
+  become_user: "{{ ansible_user_id }}"
+  when: not omz.stat.exists
+
+- name: Ensure custom plugins directory exists
+  ansible.builtin.file:
+    path: "{{ omz_dir }}/plugins"
+    state: directory
+    mode: '0755'
+    owner: "{{ ansible_user_id }}"
+  become_user: "{{ ansible_user_id }}"
+
+- name: Clone zsh-autosuggestions plugin
+  ansible.builtin.git:
+    repo: https://github.com/zsh-users/zsh-autosuggestions
+    dest: "{{ omz_dir }}/plugins/zsh-autosuggestions"
+    version: master
+    update: yes
+    depth: 1
+  become_user: "{{ ansible_user_id }}"
 
 - name: Install starship
   ansible.builtin.shell:
@@ -64,7 +88,7 @@
   ignore_errors: yes
 - name: Download neovim.appimage
   ansible.builtin.get_url:
-    url: https://github.com/neovim/neovim/releases/download/v0.10.1/nvim.appimage
+    url: https://github.com/neovim/neovim/releases/download/v0.11.3/nvim.appimage
     dest: /tmp/nvim.appimage
     mode: '0755'
   when: nvim_installed is failed
@@ -76,41 +100,67 @@
   shell: mv /tmp/nvim.appimage /usr/local/bin/nvim
   when: nvim_installed is failed
 
-- name: check if cargo is installed
-  shell: command -v cargo
-  register: cargo_exists
-  ignore_errors: yes
-- name: Download Installer
-  when: cargo_exists is failed
-  get_url:
+# ---- Rust / Cargo ----
+- name: Check if cargo is installed for this user
+  ansible.builtin.stat:
+    path: "{{ cargo_path }}"
+  register: cargo_stat
+
+- name: Download rustup installer
+  when: not cargo_stat.stat.exists
+  ansible.builtin.get_url:
     url: https://sh.rustup.rs
-    dest: /tmp/sh.rustup.rs
+    dest: /tmp/rustup-init.sh
     mode: '0755'
-    force: 'yes'
-  tags:
-    - rust
-- name: install rust/cargo
-  when: cargo_exists is failed
-  shell: /tmp/sh.rustup.rs -y
+    force: yes
   tags:
     - rust
 
-- name: Install "ripgrep" Rust package with locked dependencies
+- name: Install rustup/cargo (non-interactive, no PATH modification)
+  when: not cargo_stat.stat.exists
+  ansible.builtin.shell: /tmp/rustup-init.sh -y --no-modify-path
+  args:
+    executable: /bin/bash
+    creates: "{{ cargo_path }}"
+  tags:
+    - rust
+
+- name: Ensure cargo bin on PATH in ~/.zprofile
+  ansible.builtin.blockinfile:
+    path: "{{ ansible_env.HOME }}/.zprofile"
+    create: true
+    mode: '0644'
+    block: |
+      # Added by Ansible: rustup/cargo
+      export PATH="$HOME/.cargo/bin:$PATH"
+
+# Make sure cargo is usable right now
+- name: Verify cargo
+  ansible.builtin.command: cargo --version
+  register: cargo_ver
+  changed_when: false
+
+- name: Show cargo version
+  ansible.builtin.debug:
+    msg: "{{ cargo_ver.stdout }}"
+
+# ---- Cargo-installed tools ----
+- name: Install "ripgrep" with locked dependencies
   community.general.cargo:
     name: ripgrep
     locked: true
 
-- name: Install "find (fd)" Rust package with locked dependencies
+- name: Install "fd" (fd-find) with locked dependencies
   community.general.cargo:
     name: fd-find
     locked: true
 
-- name: Install "eza" Rust package with locked dependencies
+- name: Install "eza" with locked dependencies
   community.general.cargo:
     name: eza
     locked: true
 
-- name: Install "bat" Rust package with locked dependencies
+- name: Install "bat" with locked dependencies
   community.general.cargo:
     name: bat
     locked: true

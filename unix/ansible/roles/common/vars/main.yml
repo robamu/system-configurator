@@ -1,0 +1,4 @@
+omz_dir: "{{ ansible_env.HOME }}/.oh-my-zsh"
+cargo_home: "{{ ansible_env.HOME }}/.cargo"
+cargo_bin: "{{ cargo_home }}/bin"
+cargo_path: "{{ cargo_bin }}/cargo"
