@@ -19,12 +19,25 @@
       - python3-pip
       - pipx
       - libfuse2
+      - curl
     state: present
   become_user: root
 
-- name: Install black
-  community.general.pipx:
-    name: black
+- name: Ensure .local/bin is in ~/.zprofile
+  ansible.builtin.blockinfile:
+    path: "{{ ansible_env.HOME }}/.profile"
+    create: true
+    mode: '0644'
+    block: |
+      export PATH="$PATH:$HOME/.local/bin"
+
+- name: Ensure .local/bin is in ~/.profile
+  ansible.builtin.blockinfile:
+    path: "{{ ansible_env.HOME }}/.zprofile"
+    create: true
+    mode: '0644'
+    block: |
+      export PATH="$PATH:$HOME/.local/bin"
 
 # Should be done early, because some later steps rely on some PATH variables
 # set here.
@@ -73,6 +86,11 @@
     depth: 1
   become_user: "{{ ansible_user_id }}"
 
+- name: change user shell to zsh
+  user:
+    name: "{{ ansible_user_id }}"
+    shell: /usr/bin/zsh
+
 - name: Install starship
   ansible.builtin.shell:
     curl -sS https://starship.rs/install.sh --yes | sh
@@ -82,13 +100,14 @@
     repo: 'https://github.com/tmux-plugins/tpm'
     dest: ~/.tmux/plugins/tpm
 
+# ---- neovim installation & config ----
 - name: Check if nvim is already installed
   shell: command -v nvim
   register: nvim_installed
   ignore_errors: yes
 - name: Download neovim.appimage
   ansible.builtin.get_url:
-    url: https://github.com/neovim/neovim/releases/download/v0.11.3/nvim.appimage
+    url: https://github.com/neovim/neovim/releases/download/v0.11.3/nvim-linux-x86_64.appimage
     dest: /tmp/nvim.appimage
     mode: '0755'
   when: nvim_installed is failed
@@ -99,6 +118,15 @@
   become_user: root
   shell: mv /tmp/nvim.appimage /usr/local/bin/nvim
   when: nvim_installed is failed
+
+- name: Clone nvim config
+  ansible.builtin.git:
+    repo: https://github.com/robamu/nvim-cfg.git
+    dest: "{{ ansible_env.HOME }}/.config/nvim"
+    version: main
+    update: yes
+    depth: 1
+  become_user: "{{ ansible_user_id }}"
 
 # ---- Rust / Cargo ----
 - name: Check if cargo is installed for this user
@@ -128,6 +156,15 @@
 - name: Ensure cargo bin on PATH in ~/.zprofile
   ansible.builtin.blockinfile:
     path: "{{ ansible_env.HOME }}/.zprofile"
+    create: true
+    mode: '0644'
+    block: |
+      # Added by Ansible: rustup/cargo
+      export PATH="$HOME/.cargo/bin:$PATH"
+
+- name: Ensure cargo bin on PATH in ~/.profile
+  ansible.builtin.blockinfile:
+    path: "{{ ansible_env.HOME }}/.profile"
     create: true
     mode: '0644'
     block: |
