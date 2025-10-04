@@ -1,7 +1,9 @@
 alias gits='git status'
 alias gita='git add'
 alias gitaa='git add .'
-alias gitc='git commit -S'
+alias gitc='git commit'
+# Can be used to sign every commit.
+# alias gitc='git commit -S'
 alias gitsw='git switch'
 alias gitb='git checkout -b'
 alias gitd='git diff'
