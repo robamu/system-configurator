@@ -86,10 +86,11 @@
     depth: 1
   become_user: "{{ ansible_user_id }}"
 
-- name: change user shell to zsh
-  user:
-    name: "{{ ansible_user_id }}"
-    shell: /usr/bin/zsh
+  # - name: change user shell to zsh
+  # become: true
+  # user:
+  # name: "{{ ansible_user_id }}"
+  # shell: /usr/bin/zsh
 
 - name: Install starship
   ansible.builtin.shell:
