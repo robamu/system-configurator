@@ -53,10 +53,23 @@ ansible-playbook -i inventory.ini playbook-min.yml -K
 
 Follow [this guide](https://git-scm.com/book/en/v2/Git-Tools-Signing-Your-Work).
 
+1. Generate the key using
+
+```sh
+gpg --full-generate-key
+```
+
 After generating a key, the secret key can be exported with the following command
 
 ```sh
-gpg --output private.pgp --armor --export-secret-key <username/mail or key ID>
+gpg --list-secret-keys --keyid-format=long
+gpg --output private.pgp --armor --export-secret-key <username/mail or public key ID>
+```
+
+Configure git to sign commits using the key:
+
+```sh
+git config --global user.signingkey <pubkey>
 ```
 
 And then import this file with `gpa` or Kleopatra.
@@ -64,10 +77,10 @@ And then import this file with `gpa` or Kleopatra.
 You can export the public key with the following command
 
 ```sh
-gpg --output public.pgp --armor --export <username/mail or key ID>
+gpg --armor --export <username/mail or public key ID>
 ```
 
-This key can be uploaded to Github, Gitlab to allow verification of commits
+This key can be uploaded to Github, Gitlab to allow verification of commits.
 
 # Dual-Boot Configuration
 
