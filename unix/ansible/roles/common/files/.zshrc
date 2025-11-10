@@ -105,7 +105,10 @@ source $ZSH/oh-my-zsh.sh
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
 export PATH=$PATH:~/scripts
+# Set up generic aliases.
 source $HOME/.aliases
+# Set up cargo paths.
+source $HOME/.cargo/env
 
 eval "$(starship init zsh)"
 eval "$(zoxide init zsh)"

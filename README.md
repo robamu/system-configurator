@@ -31,9 +31,16 @@ development environment in a new Unix environment or for MinGW and git on Window
 # Ubuntu
 
 It is recommended to use the provided ansible notebook.
-[Install `ansible` first](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html#).
+[Install the full `ansible` first](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html#).
 
 Two playbooks are provided: `playbook-full` and `playbook-min`.
+
+It is recommended to install [`zsh`](https://github.com/ohmyzsh/ohmyzsh/wiki/Installing-ZSH) manually
+first and then set it as the default shell using
+
+```sh
+sudo chsh /usr/bin/zsh
+```
 
 Run minimal playbook:
 
