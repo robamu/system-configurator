@@ -25,5 +25,7 @@ alias ll='eza -l --git'
 alias lt='eza -T'
 alias lg='lazygit'
 alias cat='bat'
+
+alias zj='zellij'
 alias tn='tmux new'
 alias ta='tmux a'

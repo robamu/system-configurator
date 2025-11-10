@@ -86,12 +86,6 @@
     depth: 1
   become_user: "{{ ansible_user_id }}"
 
-  # - name: change user shell to zsh
-  # become: true
-  # user:
-  # name: "{{ ansible_user_id }}"
-  # shell: /usr/bin/zsh
-
 - name: Install starship
   ansible.builtin.shell:
     curl -sS https://starship.rs/install.sh --yes | sh
@@ -202,6 +196,21 @@
   community.general.cargo:
     name: bat
     locked: true
+
+- name: Install "zellij" with locked dependencies
+  community.general.cargo:
+    name: zellij
+    locked: true
+
+# Install zellij config
+- name: Clone zellij config
+  ansible.builtin.git:
+    repo: https://github.com/robamu/zellij-cfg.git
+    dest: "{{ ansible_env.HOME }}/.config/zellij"
+    version: main
+    update: yes
+    depth: 1
+  become_user: "{{ ansible_user_id }}"
 
 # Install fonts and icons
 - name: Ensure font directory exists
