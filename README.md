@@ -4,30 +4,6 @@ This is a personal README which includes steps and utilities to set up a conveni
 environment on Windows and Linux. It includes a Python script to set up the command line and
 development environment in a new Unix environment or for MinGW and git on Windows.
 
-# Windows
-
-1. Install [Sublime Text](https://www.sublimetext.com/)
-2. Install [MSYS2](https://www.msys2.org/)
-3. Install [Windows Terminal](https://www.microsoft.com/de-de/p/windows-terminal/9n0dx20hk701?rtc=1&activetab=pivot:overviewtab)
-4. Install [git for Windows](https://git-scm.com/download/win)
-5. Install [VS Code](https://code.visualstudio.com/)
-6. Install [Ninja](https://ninja-build.org/)
-7. Install [WSL2](https://docs.microsoft.com/en-us/windows/wsl/install-win10)
-
-## PowerShell
-
-1. Allow executing PowerShell scripts
-   ```ps
-   Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope LocalMachine
-   ```
-
-2. You can create a `Microsoft.Powershell_profile.ps1` file in the `MicrosoftPowerShell`
-   folder which will be loaded when opening PowerShell. An example file is provided in the
-   `Windows/PowerShell` folder
-
-3. It is recommended to install [posh-git](https://github.com/dahlbyk/posh-git) for better
-   git integration
-
 # Ubuntu
 
 It is recommended to use the provided ansible notebook.
@@ -97,3 +73,28 @@ timedatectl set-local-rtc 1 --adjust-system-clock
 # Neovim Configuration
 
 [Neovim configuration Repo](https://github.com/robamu/nvim-cfg)
+
+# Windows
+
+1. Install [Sublime Text](https://www.sublimetext.com/)
+2. Install [MSYS2](https://www.msys2.org/)
+3. Install [Windows Terminal](https://www.microsoft.com/de-de/p/windows-terminal/9n0dx20hk701?rtc=1&activetab=pivot:overviewtab)
+4. Install [git for Windows](https://git-scm.com/download/win)
+5. Install [VS Code](https://code.visualstudio.com/)
+6. Install [Ninja](https://ninja-build.org/)
+7. Install [WSL2](https://docs.microsoft.com/en-us/windows/wsl/install-win10)
+
+## PowerShell
+
+1. Allow executing PowerShell scripts
+   ```ps
+   Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope LocalMachine
+   ```
+
+2. You can create a `Microsoft.Powershell_profile.ps1` file in the `MicrosoftPowerShell`
+   folder which will be loaded when opening PowerShell. An example file is provided in the
+   `Windows/PowerShell` folder
+
+3. It is recommended to install [posh-git](https://github.com/dahlbyk/posh-git) for better
+   git integration
+
