@@ -8,9 +8,9 @@
   there is a rule like required documentation of public fields.
 - The most important documentation is everything that is not obvious from the code: Special rules,
   reasons on why the code is the way it is (if it is not obvious from the context), trade-offs..
-- Try to avoid ; and --. I have never seen that kind of punctuation seen much in technical
-  documentation
-- Sometimes, you documentation tend to gravitate towards rambling. Keep the sentences simple and
+- Try to avoid ; and --. I have not seen that kind of punctuation seen much in technical
+  documentation.
+- Sometimes, your documentation tends to gravitate towards rambling. Keep the sentences simple and
   understandable. There is beauty in simplicity.
 
 # Rules for writing commit message
