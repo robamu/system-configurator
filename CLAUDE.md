@@ -1,3 +1,5 @@
+- Prefer `rg` over `grep`
+
 # Rules for writing code documentation
 
 - You tend to write very verbose documentation, almost to the point of docs becoming noise.
@@ -16,3 +18,4 @@
 - You tend to write very verbose commit messages, almost to the point of docs becoming noise.
 - Sometimes, your commit messages tend to gravitate towards rambling. Keep the sentences simple and
   understandable. There is beauty in simplicity.
+- Prefer bullet lists over flowing prose paragraphs when describing multiple changes.
