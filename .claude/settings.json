@@ -6,5 +6,6 @@
   "model": "sonnet",
   "permissions": {
     "defaultMode": "auto"
-  }
+  },
+  "preferredNotifChannel": "terminal_bell"
 }
