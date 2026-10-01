@@ -1,6 +1,6 @@
 ## Tools
 
-- Prefer `rg` over `grep`
+- Prefer `rg` over `grep` for grepping
 
 ## Rules for writing code documentation
 
@@ -21,10 +21,17 @@
 - Sometimes, your commit messages tend to gravitate towards rambling. Keep the sentences simple and
   understandable. There is beauty in simplicity.
 - Prefer bullet lists over flowing prose paragraphs when describing multiple changes.
+- Never create commits yourself. Stage the changes and stop. I write every commit message
+  myself, so I understand each change.
+- Never use a `Co-Authored-By` trailer. When I ask for a trailer, use
+  `Assisted-by: Claude <model> <noreply@anthropic.com>` with the model name, for example
+  `Assisted-by: Claude Opus 5.5 <noreply@anthropic.com>`.
+- You can point out problems in my commit messages, but do not rewrite them unless I ask.
 
 ## Scope discipline
 
-- Never bundle unrelated changes into one branch or commit (e.g. an i2c fix and an spi.rs cleanup).t
+- Never bundle unrelated changes into one branch or commit (e.g. an i2c fix and an spi.rs cleanup).
   One logical change per branch/commit.
 - Before large multi-file refactors or speculative additions, state the plan in 2-3 bullets and
   wait for confirmation.
+
